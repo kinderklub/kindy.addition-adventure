@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Jom Tambah / Addition Adventure</title>
+  <!-- Fon Mesra Kanak-kanak Prasekolah -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            fredoka: ['"Fredoka One"', 'cursive'],
+            quicksand: ['"Quicksand"', 'sans-serif']
+          },
+          colors: {
+            brand: {
+              yellow: '#FFD124',
+              orange: '#FF8A3D',
+              pink: '#FF5E97',
+              purple: '#8E52FF',
+              blue: '#2BC0E4',
+              green: '#4DD637',
+              mint: '#E2FBE8',
+              cream: '#FFFDF5'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background-color: #79d7ed;
+      overflow-x: hidden;
+    }
+    .heading-font {
+      font-family: 'Fredoka One', cursive;
+    }
+    
+    /* Animasi Latar Belakang Pelbagai Lapisan */
+    @keyframes floatCloud {
+      0% { transform: translateX(-150px); }
+      100% { transform: translateX(calc(100vw + 150px)); }
+    }
+    @keyframes bobbing {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(2deg); }
+    }
+    @keyframes sway {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+    @keyframes popBounce {
+      0% { transform: scale(0); opacity: 0; }
+      60% { transform: scale(1.15); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes monsterBounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-6px) scale(1.02, 0.98); }
+    }
+    @keyframes monsterExcited {
+      0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+      25% { transform: translateY(-14px) rotate(-6deg) scale(1.08); }
+      75% { transform: translateY(-14px) rotate(6deg) scale(1.08); }
+    }
+    @keyframes monsterShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    @keyframes pulseSoft {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+
+    .anim-cloud-1 { animation: floatCloud 45s linear infinite; }
+    .anim-cloud-2 { animation: floatCloud 65s linear infinite -20s; }
+    .anim-cloud-3 { animation: floatCloud 55s linear infinite -35s; }
+    .anim-bob { animation: bobbing 3.5s ease-in-out infinite; }
+    .anim-sway { animation: sway 4s ease-in-out infinite; transform-origin: bottom center; }
+    .anim-twinkle { animation: twinkle 2.5s ease-in-out infinite; }
+    .anim-monster-idle { animation: monsterBounce 3s ease-in-out infinite; }
+    .anim-monster-happy { animation: monsterExcited 0.7s ease-in-out 3; }
+    .anim-monster-wrong { animation: monsterShake 0.5s ease-in-out; }
+    .anim-pulse { animation: pulseSoft 1.8s ease-in-out infinite; }
+    .anim-pop { animation: popBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+    /* Bar Skrol Khas */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #FF8A3D;
+      border-radius: 10px;
+    }
+
+    /* Butang 3D Taktil Kanak-kanak */
+    .btn-3d {
+      transition: all 0.12s ease;
+      box-shadow: 0 6px 0 rgba(0,0,0,0.18);
+    }
+    .btn-3d:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 rgba(0,0,0,0.18);
+    }
+    .btn-3d-yellow {
+      background: linear-gradient(180deg, #FFE053 0%, #FFB703 100%);
+      border: 3px solid #D48800;
+      color: #5C3200;
+      box-shadow: 0 6px 0 #D48800;
+    }
+    .btn-3d-yellow:active {
+      box-shadow: 0 2px 0 #D48800;
+    }
+    .btn-3d-pink {
+      background: linear-gradient(180deg, #FF7BB0 0%, #F72585 100%);
+      border: 3px solid #A80D53;
+      color: #FFFFFF;
+      box-shadow: 0 6px 0 #A80D53;
+    }
+    .btn-3d-pink:active {
+      box-shadow: 0 2px 0 #A80D53;
+    }
+    .btn-3d-green {
+      background: linear-gradient(180deg, #74E75A 0%, #38B000 100%);
+      border: 3px solid #206E00;
+      color: #FFFFFF;
+      box-shadow: 0 6px 0 #206E00;
+    }
+    .btn-3d-green:active {
+      box-shadow: 0 2px 0 #206E00;
+    }
+    .btn-3d-blue {
+      background: linear-gradient(180deg, #53D2FF 0%, #0096C7 100%);
+      border: 3px solid #006080;
+      color: #FFFFFF;
+      box-shadow: 0 6px 0 #006080;
+    }
+    .btn-3d-blue:active {
+      box-shadow: 0 2px 0 #006080;
+    }
+    .btn-3d-purple {
+      background: linear-gradient(180deg, #B584FF 0%, #7209B7 100%);
+      border: 3px solid #480277;
+      color: #FFFFFF;
+      box-shadow: 0 6px 0 #480277;
+    }
+    .btn-3d-purple:active {
+      box-shadow: 0 2px 0 #480277;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between relative overflow-x-hidden select-none">
+
+  <!-- ==================== SISTEM AUDIO WEB AUDIO API ==================== -->
+  <script>
+    // Penjana Bunyi Sintesis Mesra Kanak-kanak
+    class SoundFX {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      playTap() {
+        if (this.muted) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.09);
+      }
+      playPop(pitchModifier = 1) {
+        if (this.muted) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        const baseFreq = 320 * pitchModifier;
+        osc.frequency.setValueAtTime(baseFreq, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(baseFreq * 2.2, this.ctx.currentTime + 0.12);
+        gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.12);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.13);
+      }
+      playBite() {
+        if (this.muted) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(250, this.ctx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.35, this.ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.15);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.16);
+      }
+      playCorrect() {
+        if (this.muted) return;
+        this.init();
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        notes.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.08);
+          gain.gain.setValueAtTime(0, this.ctx.currentTime + idx * 0.08);
+          gain.gain.linearRampToValueAtTime(0.25, this.ctx.currentTime + idx * 0.08 + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.08 + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(this.ctx.currentTime + idx * 0.08);
+          osc.stop(this.ctx.currentTime + idx * 0.08 + 0.36);
+        });
+      }
+      playWrong() {
+        if (this.muted) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(280, this.ctx.currentTime);
+        osc.frequency.linearRampToValueAtTime(180, this.ctx.currentTime + 0.22);
+        gain.gain.setValueAtTime(0.18, this.ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.22);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.23);
+      }
+      playCelebrate() {
+        if (this.muted) return;
+        this.init();
+        const fanfare = [523.25, 523.25, 523.25, 659.25, 783.99, 1046.50];
+        const times = [0, 0.12, 0.24, 0.38, 0.52, 0.70];
+        fanfare.forEach((freq, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + times[i]);
+          gain.gain.setValueAtTime(0.3, this.ctx.currentTime + times[i]);
+          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + times[i] + 0.28);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(this.ctx.currentTime + times[i]);
+          osc.stop(this.ctx.currentTime + times[i] + 0.3);
+        });
+      }
+    }
+    const sound = new SoundFX();
+  </script>
+
+  <!-- ==================== LATAR BELAKANG FESTIVAL MAKANAN CHIBI ==================== -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <!-- Gradien Langit -->
+    <div class="absolute inset-0 bg-gradient-to-b from-[#40C9FF] via-[#89EAFF] to-[#E2FBE8]"></div>
+
+    <!-- Matahari Comel -->
+    <div class="absolute top-4 right-8 w-20 h-20 md:w-28 md:h-28 rounded-full bg-gradient-to-tr from-yellow-400 to-yellow-200 border-4 border-yellow-100 shadow-lg flex items-center justify-center anim-twinkle opacity-90">
+      <div class="w-14 h-14 md:w-20 md:h-20 rounded-full bg-yellow-300 flex items-center justify-center">
+        <svg viewBox="0 0 100 100" class="w-10 h-10 md:w-14 md:h-14">
+          <circle cx="35" cy="45" r="7" fill="#8B4513"/>
+          <circle cx="65" cy="45" r="7" fill="#8B4513"/>
+          <circle cx="37" cy="43" r="2.5" fill="#FFF"/>
+          <circle cx="67" cy="43" r="2.5" fill="#FFF"/>
+          <ellipse cx="25" cy="55" rx="6" ry="3" fill="#FF7B90" opacity="0.6"/>
+          <ellipse cx="75" cy="55" rx="6" ry="3" fill="#FF7B90" opacity="0.6"/>
+          <path d="M 40 58 Q 50 68 60 58" stroke="#8B4513" stroke-width="4" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Awan Bergerak -->
+    <div class="absolute top-6 left-0 w-36 md:w-56 text-white/90 anim-cloud-1">
+      <svg viewBox="0 0 120 60" fill="currentColor">
+        <path d="M 20 45 A 20 20 0 0 1 50 20 A 25 25 0 0 1 90 25 A 20 20 0 0 1 105 45 A 15 15 0 0 1 95 55 L 25 55 A 15 15 0 0 1 20 45 Z" />
+      </svg>
+    </div>
+    <div class="absolute top-20 left-0 w-48 md:w-72 text-white/80 anim-cloud-2">
+      <svg viewBox="0 0 140 65" fill="currentColor">
+        <path d="M 25 50 A 22 22 0 0 1 60 25 A 30 30 0 0 1 105 28 A 22 22 0 0 1 125 50 A 16 16 0 0 1 115 60 L 25 60 A 16 16 0 0 1 25 50 Z" />
+      </svg>
+    </div>
+    <div class="absolute top-12 left-0 w-32 md:w-44 text-white/75 anim-cloud-3">
+      <svg viewBox="0 0 100 50" fill="currentColor">
+        <path d="M 15 38 A 18 18 0 0 1 42 18 A 22 22 0 0 1 78 22 A 18 18 0 0 1 90 38 L 15 38 Z" />
+      </svg>
+    </div>
+
+    <!-- Bendera Festival Atas -->
+    <div class="absolute top-0 left-0 right-0 h-10 flex justify-between overflow-hidden opacity-95">
+      <svg viewBox="0 0 1000 60" preserveAspectRatio="none" class="w-full h-12">
+        <path d="M 0 5 Q 125 35 250 5 Q 375 35 500 5 Q 625 35 750 5 Q 875 35 1000 5" stroke="#78350F" stroke-width="2" fill="none"/>
+        <polygon points="25,12 55,12 40,42" fill="#FF5E97" />
+        <polygon points="85,19 115,19 100,48" fill="#FFD124" />
+        <polygon points="145,21 175,21 160,50" fill="#4DD637" />
+        <polygon points="205,15 235,15 220,45" fill="#2BC0E4" />
+        <polygon points="275,12 305,12 290,42" fill="#8E52FF" />
+        <polygon points="335,19 365,19 350,48" fill="#FF8A3D" />
+        <polygon points="395,21 425,21 410,50" fill="#FF5E97" />
+        <polygon points="465,14 495,14 480,44" fill="#FFD124" />
+        <polygon points="525,12 555,12 540,42" fill="#4DD637" />
+        <polygon points="585,19 615,19 600,48" fill="#2BC0E4" />
+        <polygon points="645,21 675,21 660,50" fill="#8E52FF" />
+        <polygon points="715,14 745,14 730,44" fill="#FF8A3D" />
+        <polygon points="775,12 805,12 790,42" fill="#FF5E97" />
+        <polygon points="835,19 865,19 850,48" fill="#FFD124" />
+        <polygon points="895,21 925,21 910,50" fill="#4DD637" />
+        <polygon points="955,14 985,14 970,44" fill="#2BC0E4" />
+      </svg>
+    </div>
+
+    <!-- Bukit Hijau dan Gerai Festival Makanan -->
+    <div class="absolute bottom-0 left-0 right-0 h-44 md:h-64 pointer-events-none">
+      <svg viewBox="0 0 1200 400" preserveAspectRatio="none" class="w-full h-full">
+        <path d="M 0 260 Q 300 160 650 260 T 1200 240 L 1200 400 L 0 400 Z" fill="#78D64B" opacity="0.6"/>
+        <path d="M 0 300 Q 400 200 800 290 T 1200 300 L 1200 400 L 0 400 Z" fill="#52C42B"/>
+        <circle cx="80" cy="270" r="30" fill="#2E9E14"/>
+        <rect x="74" y="295" width="12" height="30" fill="#78350F" rx="3"/>
+        <circle cx="1120" cy="260" r="36" fill="#2E9E14"/>
+        <rect x="1113" y="290" width="14" height="35" fill="#78350F" rx="3"/>
+        <path d="M 180 320 L 250 320 L 240 300 L 190 300 Z" fill="#FF5E97" opacity="0.85"/>
+        <rect x="195" y="320" width="40" height="30" fill="#FFE58F" opacity="0.9"/>
+        <path d="M 960 315 L 1030 315 L 1020 295 L 970 295 Z" fill="#2BC0E4" opacity="0.85"/>
+        <rect x="975" y="315" width="40" height="30" fill="#FFE58F" opacity="0.9"/>
+      </svg>
+    </div>
+
+    <!-- Bunga & Belon Depan -->
+    <div class="absolute bottom-4 left-6 hidden sm:block anim-sway">
+      <svg width="40" height="50" viewBox="0 0 40 50">
+        <path d="M 20 50 Q 18 35 20 25" stroke="#2B8A3E" stroke-width="4" fill="none"/>
+        <circle cx="12" cy="20" r="8" fill="#FF5E97"/>
+        <circle cx="28" cy="20" r="8" fill="#FF5E97"/>
+        <circle cx="20" cy="12" r="8" fill="#FF5E97"/>
+        <circle cx="20" cy="28" r="8" fill="#FF5E97"/>
+        <circle cx="20" cy="20" r="7" fill="#FFD124"/>
+      </svg>
+    </div>
+    <div class="absolute bottom-6 right-8 hidden sm:block anim-sway" style="animation-delay: 1.5s;">
+      <svg width="40" height="50" viewBox="0 0 40 50">
+        <path d="M 20 50 Q 22 35 20 25" stroke="#2B8A3E" stroke-width="4" fill="none"/>
+        <circle cx="12" cy="20" r="8" fill="#FFB703"/>
+        <circle cx="28" cy="20" r="8" fill="#FFB703"/>
+        <circle cx="20" cy="12" r="8" fill="#FFB703"/>
+        <circle cx="20" cy="28" r="8" fill="#FFB703"/>
+        <circle cx="20" cy="20" r="7" fill="#FFFFFF"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ==================== BEKAS UTAMA APLIKASI ==================== -->
+  <div id="app" class="relative z-10 flex-1 flex flex-col justify-between items-center p-2 sm:p-4 max-w-4xl mx-auto w-full min-h-screen">
+    
+    <!-- Pengepala Navigasi Atas -->
+    <header class="w-full flex items-center justify-between gap-2 py-1 px-2 mb-1">
+      <div class="flex items-center gap-2">
+        <button id="navHomeBtn" onclick="game.goToHome()" class="hidden bg-white/90 hover:bg-white text-brand-orange border-2 border-orange-400 p-2 rounded-2xl shadow-md font-bold text-sm flex items-center gap-1 active:scale-95 transition-all">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          <span class="hidden sm:inline" data-i18n="menu">Menu</span>
+        </button>
+        <button id="soundToggleBtn" onclick="game.toggleSound()" class="bg-white/90 hover:bg-white text-purple-600 border-2 border-purple-400 p-2 rounded-2xl shadow-md font-bold text-sm active:scale-95 transition-all flex items-center justify-center">
+          <span id="soundIcon" class="flex items-center justify-center">
+            <svg viewBox="0 0 32 32" class="w-5 h-5 inline-block"><path d="M14 8L8 12H4C2.9 12 2 12.9 2 14V18C2 19.1 2.9 20 4 20H8L14 24C15.1 24.7 16 24.2 16 23V9C16 7.8 15.1 7.3 14 8Z" fill="#8E52FF" stroke="#480277" stroke-width="2"/><path d="M20 11C21.8 12.3 23 14.5 23 17C23 19.5 21.8 21.7 20 23" stroke="#FF5E97" stroke-width="2.5" stroke-linecap="round" fill="none"/><path d="M24 7C27 9.5 29 13.5 29 17C29 20.5 27 24.5 24 27" stroke="#FFD124" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg>
+          </span>
+        </button>
+      </div>
+
+      <!-- Lencana Tajuk Aplikasi dengan Ikon Khemah Karnival SVG Comel -->
+      <div class="flex items-center gap-1.5 bg-white/90 border-2 border-yellow-400 px-3 py-1 rounded-full shadow-md">
+        <svg viewBox="0 0 32 32" class="w-5 h-5 inline-block"><polygon points="16,3 16,8 20,5.5" fill="#FF5E97"/><line x1="16" y1="3" x2="16" y2="9" stroke="#78350F" stroke-width="2"/><path d="M5 26 L16 9 L27 26 Z" fill="#FFE053" stroke="#D48800" stroke-width="2"/><path d="M16 9 L11 26 L16 26 Z" fill="#FF5E97"/><path d="M16 9 L21 26 L16 26 Z" fill="#FF5E97"/><path d="M3 26 C3 25 29 25 29 26 L27 29 C27 30 5 30 5 29 Z" fill="#4DD637" stroke="#2B8A3E" stroke-width="1.5"/></svg>
+        <span class="heading-font text-brand-pink text-base sm:text-lg tracking-wide" id="topAppTitle">JOM TAMBAH</span>
+      </div>
+
+      <!-- Pilihan Bahasa -->
+      <div class="flex items-center gap-2">
+        <div class="bg-white/90 p-1 rounded-2xl border-2 border-blue-400 shadow-md flex items-center gap-1">
+          <button id="langBM" onclick="game.setLanguage('bm')" class="px-2.5 py-1 rounded-xl text-xs font-bold transition-all bg-brand-pink text-white shadow-sm">BM</button>
+          <button id="langEN" onclick="game.setLanguage('en')" class="px-2.5 py-1 rounded-xl text-xs font-bold transition-all text-gray-600 hover:text-brand-pink">EN</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Kawasan Paparan Skrin Dinamik -->
+    <main id="mainScreenContainer" class="w-full flex-1 flex flex-col justify-center items-center my-auto py-2">
+      <!-- Kandungan dijana oleh JavaScript -->
+    </main>
+
+    <!-- Kaki Laman Global -->
+    <footer class="w-full text-center py-2 text-xs font-semibold text-emerald-900/80 tracking-wider">
+      Kinder Klub | All Rights Reserved
+    </footer>
+  </div>
+
+  <!-- ==================== PANGKALAN DATA 52 KARYA CHIBI SVG ==================== -->
+  <script>
+    /**
+     * Pangkalan Data Grafik Chibi (Tepat 52 Item)
+     */
+    const ARTWORKS = [
+      // 1. BUAH / FRUITS (8 item)
+      { id: 'apple', cat: 'fruits', bm: 'Epal', en: 'Apple', color: '#FF4D6D', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><path d="M 50 20 C 50 10 58 5 60 5" stroke="#78350F" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M 50 20 C 45 15 35 15 32 22 C 32 22 45 23 50 20" fill="#4DD637" stroke="#2B8A3E" stroke-width="2"/><path d="M 50 30 C 35 15 12 25 15 55 C 18 80 40 92 50 90 C 60 92 82 80 85 55 C 88 25 65 15 50 30 Z" fill="#FF4D6D" stroke="#B80C38" stroke-width="4"/><ellipse cx="32" cy="45" rx="5" ry="10" fill="#FFF" opacity="0.4" transform="rotate(-20 32 45)"/><circle cx="38" cy="55" r="4" fill="#3A0007"/><circle cx="62" cy="55" r="4" fill="#3A0007"/><path d="M 44 65 Q 50 72 56 65" stroke="#3A0007" stroke-width="3" fill="none" stroke-linecap="round"/></svg>` },
+      { id: 'banana', cat: 'fruits', bm: 'Pisang', en: 'Banana', color: '#FFD124', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><path d="M 20 75 C 25 85 50 90 75 70 C 85 60 90 40 85 20 C 85 20 78 35 60 55 C 45 70 25 72 20 75 Z" fill="#FFD124" stroke="#D48800" stroke-width="4"/><path d="M 85 20 L 88 12" stroke="#78350F" stroke-width="5" stroke-linecap="round"/><circle cx="65" cy="50" r="3.5" fill="#5C3200"/><circle cx="52" cy="62" r="3.5" fill="#5C3200"/><path d="M 56 59 Q 60 63 62 57" stroke="#5C3200" stroke-width="2.5" fill="none"/></svg>` },
+      { id: 'strawberry', cat: 'fruits', bm: 'Strawberi', en: 'Strawberry', color: '#FF3366', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><path d="M 50 18 L 40 25 L 30 15 L 35 28 L 22 30 L 35 38 L 50 30 L 65 38 L 78 30 L 65 28 L 70 15 L 60 25 Z" fill="#4DD637" stroke="#2B8A3E" stroke-width="2"/><path d="M 22 35 C 15 60 30 85 50 90 C 70 85 85 60 78 35 C 65 30 35 30 22 35 Z" fill="#FF3366" stroke="#A80D53" stroke-width="4"/><circle cx="35" cy="48" r="2" fill="#FFE58F"/><circle cx="65" cy="48" r="2" fill="#FFE58F"/><circle cx="42" cy="62" r="2" fill="#FFE58F"/><circle cx="58" cy="62" r="2" fill="#FFE58F"/><circle cx="50" cy="75" r="2" fill="#FFE58F"/><circle cx="42" cy="48" r="3" fill="#4A0018"/><circle cx="58" cy="48" r="3" fill="#4A0018"/></svg>` },
+      { id: 'orange', cat: 'fruits', bm: 'Oren', en: 'Orange', color: '#FF8A3D', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><circle cx="50" cy="55" r="36" fill="#FF8A3D" stroke="#C05600" stroke-width="4"/><path d="M 50 20 L 50 12" stroke="#78350F" stroke-width="4" stroke-linecap="round"/><ellipse cx="58" cy="16" rx="8" ry="4" fill="#4DD637" transform="rotate(-15 58 16)"/><circle cx="38" cy="52" r="4" fill="#4D2200"/><circle cx="62" cy="52" r="4" fill="#4D2200"/><path d="M 44 62 Q 50 69 56 62" stroke="#4D2200" stroke-width="3" fill="none" stroke-linecap="round"/></svg>` },
+      { id: 'watermelon', cat: 'fruits', bm: 'Tembikai', en: 'Watermelon', color: '#FF4D6D', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><path d="M 15 45 C 20 85 80 85 85 45 Z" fill="#4DD637" stroke="#2B8A3E" stroke-width="4"/><path d="M 20 45 C 25 78 75 78 80 45 Z" fill="#FFFDF5"/><path d="M 23 45 C 28 73 72 73 77 45 Z" fill="#FF4D6D"/><circle cx="38" cy="55" r="2.5" fill="#333"/><circle cx="50" cy="60" r="2.5" fill="#333"/><circle cx="62" cy="55" r="2.5" fill="#333"/></svg>` },
+      { id: 'grape', cat: 'fruits', bm: 'Anggur', en: 'Grapes', color: '#9D4EDD', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><path d="M 50 20 L 50 10" stroke="#78350F" stroke-width="4"/><circle cx="40" cy="35" r="12" fill="#9D4EDD" stroke="#5A189A" stroke-width="3"/><circle cx="60" cy="35" r="12" fill="#9D4EDD" stroke="#5A189A" stroke-width="3"/><circle cx="32" cy="52" r="12" fill="#9D4EDD" stroke="#5A189A" stroke-width="3"/><circle cx="50" cy="52" r="12" fill="#B584FF" stroke="#5A189A" stroke-width="3"/><circle cx="68" cy="52" r="12" fill="#9D4EDD" stroke="#5A189A" stroke-width="3"/><circle cx="42" cy="70" r="12" fill="#9D4EDD" stroke="#5A189A" stroke-width="3"/><circle cx="58" cy="70" r="12" fill="#9D4EDD" stroke="#5A189A" stroke-width="3"/><circle cx="50" cy="84" r="10" fill="#9D4EDD" stroke="#5A189A" stroke-width="3"/></svg>` },
+      { id: 'mango', cat: 'fruits', bm: 'Mangga', en: 'Mango', color: '#FFB703', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><path d="M 45 15 C 65 15 85 35 80 65 C 75 85 50 90 35 85 C 18 78 20 50 30 30 C 35 20 40 15 45 15 Z" fill="#FFB703" stroke="#D48800" stroke-width="4"/><path d="M 45 15 L 45 8" stroke="#78350F" stroke-width="4"/><circle cx="45" cy="48" r="4" fill="#4D2600"/><circle cx="65" cy="52" r="4" fill="#4D2600"/><path d="M 50 62 Q 56 68 62 63" stroke="#4D2600" stroke-width="3" fill="none"/></svg>` },
+      { id: 'pineapple', cat: 'fruits', bm: 'Nenas', en: 'Pineapple', color: '#FFC300', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><path d="M 50 30 L 40 10 L 50 20 L 60 10 Z" fill="#4DD637" stroke="#2B8A3E" stroke-width="3"/><ellipse cx="50" cy="62" rx="28" ry="32" fill="#FFC300" stroke="#D48800" stroke-width="4"/><path d="M 30 48 L 70 75 M 70 48 L 30 75 M 25 62 L 75 62" stroke="#D48800" stroke-width="2.5"/><circle cx="42" cy="58" r="3" fill="#5C3200"/><circle cx="58" cy="58" r="3" fill="#5C3200"/></svg>` },
+
+      // 2. HAIWAN / ANIMALS (7 item)
+      { id: 'chick', cat: 'animals', bm: 'Anak Ayam', en: 'Little Chick', color: '#FFD124', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><circle cx="50" cy="55" r="34" fill="#FFD124" stroke="#D48800" stroke-width="4"/><polygon points="45,55 55,55 50,65" fill="#FF8A3D" stroke="#C05600" stroke-width="2"/><circle cx="36" cy="48" r="4.5" fill="#222"/><circle cx="64" cy="48" r="4.5" fill="#222"/><circle cx="38" cy="46" r="1.5" fill="#FFF"/><circle cx="66" cy="46" r="1.5" fill="#FFF"/><ellipse cx="26" cy="55" rx="5" ry="3" fill="#FF7B90" opacity="0.6"/><ellipse cx="74" cy="55" rx="5" ry="3" fill="#FF7B90" opacity="0.6"/><path d="M 45 22 Q 50 12 55 22" stroke="#D48800" stroke-width="3" fill="none"/></svg>` },
+      { id: 'fish', cat: 'animals', bm: 'Ikan', en: 'Fish', color: '#2BC0E4', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><ellipse cx="45" cy="50" rx="30" ry="24" fill="#2BC0E4" stroke="#007799" stroke-width="4"/><polygon points="70,50 92,30 92,70" fill="#2BC0E4" stroke="#007799" stroke-width="4"/><circle cx="30" cy="45" r="4" fill="#111"/><circle cx="32" cy="43" r="1.5" fill="#FFF"/><path d="M 20 54 Q 26 58 20 62" stroke="#007799" stroke-width="3" fill="none"/><path d="M 48 38 Q 42 50 48 62" stroke="#007799" stroke-width="3" fill="none"/></svg>` },
+      { id: 'bunny', cat: 'animals', bm: 'Arnab', en: 'Bunny', color: '#FFFFFF', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><ellipse cx="35" cy="25" rx="8" ry="20" fill="#FFF" stroke="#CCC" stroke-width="3"/><ellipse cx="35" cy="25" rx="4" ry="14" fill="#FFB7C5"/><ellipse cx="65" cy="25" rx="8" ry="20" fill="#FFF" stroke="#CCC" stroke-width="3"/><ellipse cx="65" cy="25" rx="4" ry="14" fill="#FFB7C5"/><circle cx="50" cy="60" r="30" fill="#FFF" stroke="#DDD" stroke-width="4"/><circle cx="38" cy="55" r="4" fill="#333"/><circle cx="62" cy="55" r="4" fill="#333"/><polygon points="47,63 53,63 50,67" fill="#FF5E97"/><path d="M 44 70 Q 50 75 56 70" stroke="#333" stroke-width="2.5" fill="none"/></svg>` },
+      { id: 'cat', cat: 'animals', bm: 'Kucing', en: 'Kitten', color: '#FFA07A', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><polygon points="25,45 25,20 45,35" fill="#FFA07A" stroke="#D35400" stroke-width="3"/><polygon points="75,45 75,20 55,35" fill="#FFA07A" stroke="#D35400" stroke-width="3"/><circle cx="50" cy="58" r="30" fill="#FFA07A" stroke="#D35400" stroke-width="4"/><circle cx="38" cy="54" r="4" fill="#222"/><circle cx="62" cy="54" r="4" fill="#222"/><ellipse cx="50" cy="62" rx="3" ry="2" fill="#D35400"/><path d="M 42 68 Q 50 74 58 68" stroke="#222" stroke-width="2.5" fill="none"/></svg>` },
+      { id: 'turtle', cat: 'animals', bm: 'Penyu', en: 'Turtle', color: '#52C42B', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><circle cx="50" cy="55" r="28" fill="#52C42B" stroke="#2B8A3E" stroke-width="4"/><circle cx="50" cy="26" r="14" fill="#74E75A" stroke="#2B8A3E" stroke-width="3"/><circle cx="45" cy="24" r="2.5" fill="#111"/><circle cx="55" cy="24" r="2.5" fill="#111"/><circle cx="24" cy="45" r="7" fill="#74E75A"/><circle cx="76" cy="45" r="7" fill="#74E75A"/><circle cx="26" cy="68" r="7" fill="#74E75A"/><circle cx="74" cy="68" r="7" fill="#74E75A"/><path d="M 40 55 L 60 55 M 50 40 L 50 70" stroke="#2B8A3E" stroke-width="3"/></svg>` },
+      { id: 'butterfly', cat: 'animals', bm: 'Rama-rama', en: 'Butterfly', color: '#FF5E97', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><ellipse cx="32" cy="40" rx="18" ry="14" fill="#FF5E97" stroke="#A80D53" stroke-width="3"/><ellipse cx="68" cy="40" rx="18" ry="14" fill="#FF5E97" stroke="#A80D53" stroke-width="3"/><ellipse cx="35" cy="65" rx="14" ry="11" fill="#FFD124" stroke="#D48800" stroke-width="3"/><ellipse cx="65" cy="65" rx="14" ry="11" fill="#FFD124" stroke="#D48800" stroke-width="3"/><ellipse cx="50" cy="52" rx="6" ry="24" fill="#5A189A" stroke="#333" stroke-width="2"/><circle cx="50" cy="30" r="7" fill="#5A189A"/></svg>` },
+      { id: 'frog', cat: 'animals', bm: 'Katak', en: 'Frog', color: '#4DD637', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><circle cx="35" cy="35" r="12" fill="#4DD637" stroke="#2B8A3E" stroke-width="3"/><circle cx="65" cy="35" r="12" fill="#4DD637" stroke="#2B8A3E" stroke-width="3"/><circle cx="35" cy="35" r="5" fill="#FFF"/><circle cx="35" cy="35" r="3" fill="#000"/><circle cx="65" cy="35" r="5" fill="#FFF"/><circle cx="65" cy="35" r="3" fill="#000"/><ellipse cx="50" cy="60" rx="34" ry="26" fill="#4DD637" stroke="#2B8A3E" stroke-width="4"/><ellipse cx="50" cy="68" rx="20" ry="14" fill="#E2FBE8"/><path d="M 38 60 Q 50 72 62 60" stroke="#1B5E20" stroke-width="3" fill="none"/></svg>` },
+
+      // 3. MAKANAN / FOOD (7 item)
+      { id: 'cupcake', cat: 'food', bm: 'Kek Cawan', en: 'Cupcake', color: '#FF7BB0', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><path d="M 28 55 L 34 85 L 66 85 L 72 55 Z" fill="#FFE58F" stroke="#D48800" stroke-width="3"/><path d="M 22 55 C 20 35 40 25 50 25 C 60 25 80 35 78 55 Z" fill="#FF7BB0" stroke="#A80D53" stroke-width="4"/><circle cx="50" cy="20" r="7" fill="#FF1744" stroke="#990000" stroke-width="2"/><circle cx="40" cy="45" r="3" fill="#FFF"/><circle cx="60" cy="45" r="3" fill="#FFF"/></svg>` },
+      { id: 'cookie', cat: 'food', bm: 'Biskut', en: 'Cookie', color: '#D4A373', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><circle cx="50" cy="50" r="35" fill="#D4A373" stroke="#8C531B" stroke-width="4"/><circle cx="35" cy="35" r="5" fill="#582F0E"/><circle cx="62" cy="40" r="4.5" fill="#582F0E"/><circle cx="45" cy="58" r="5.5" fill="#582F0E"/><circle cx="65" cy="65" r="4" fill="#582F0E"/><circle cx="30" cy="62" r="4" fill="#582F0E"/></svg>` },
+      { id: 'icecream', cat: 'food', bm: 'Aiskrim', en: 'Ice Cream', color: '#FF6392', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><polygon points="30,50 70,50 50,92" fill="#E9C46A" stroke="#B08924" stroke-width="4"/><circle cx="50" cy="40" r="24" fill="#FF6392" stroke="#A80D53" stroke-width="4"/><circle cx="42" cy="36" r="3.5" fill="#333"/><circle cx="58" cy="36" r="3.5" fill="#333"/><path d="M 46 44 Q 50 48 54 44" stroke="#333" stroke-width="2.5" fill="none"/></svg>` },
+      { id: 'donut', cat: 'food', bm: 'Donat', en: 'Donut', color: '#F72585', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><ellipse cx="50" cy="50" rx="36" ry="34" fill="#FFD166" stroke="#C79200" stroke-width="4"/><ellipse cx="50" cy="46" rx="34" ry="26" fill="#F72585"/><ellipse cx="50" cy="50" rx="12" ry="10" fill="#79d7ed" stroke="#C79200" stroke-width="3"/><rect x="35" y="32" width="6" height="2" fill="#FFF" rx="1"/><rect x="58" y="35" width="6" height="2" fill="#FFE58F" rx="1"/><rect x="44" y="65" width="6" height="2" fill="#4DD637" rx="1"/></svg>` },
+      { id: 'cheese', cat: 'food', bm: 'Keju', en: 'Cheese', color: '#FFD124', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><polygon points="18,70 82,70 70,30 25,30" fill="#FFD124" stroke="#D48800" stroke-width="4"/><circle cx="40" cy="55" r="6" fill="#FFAA00"/><circle cx="62" cy="50" r="4" fill="#FFAA00"/><circle cx="50" cy="40" r="5" fill="#FFAA00"/></svg>` },
+      { id: 'candy', cat: 'food', bm: 'Gula-gula', en: 'Candy', color: '#FF5E97', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><polygon points="20,35 20,65 38,50" fill="#FF5E97" stroke="#A80D53" stroke-width="3"/><polygon points="80,35 80,65 62,50" fill="#FF5E97" stroke="#A80D53" stroke-width="3"/><circle cx="50" cy="50" r="22" fill="#FFD124" stroke="#D48800" stroke-width="4"/><circle cx="50" cy="50" r="14" fill="#FF5E97"/></svg>` },
+      { id: 'lollipop', cat: 'food', bm: 'Lolipop', en: 'Lollipop', color: '#7209B7', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><rect x="47" y="55" width="6" height="35" fill="#DDD" stroke="#999" stroke-width="2" rx="3"/><circle cx="50" cy="38" r="26" fill="#F72585" stroke="#7209B7" stroke-width="4"/><path d="M 50 20 A 18 18 0 0 1 68 38 A 12 12 0 0 1 50 50 A 6 6 0 0 1 44 38" stroke="#FFE58F" stroke-width="3" fill="none"/></svg>` },
+
+      // 4. MAINAN / TOYS (6 item)
+      { id: 'ball', cat: 'toys', bm: 'Bola', en: 'Ball', color: '#2BC0E4', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><circle cx="50" cy="50" r="35" fill="#2BC0E4" stroke="#007799" stroke-width="4"/><path d="M 15 50 Q 50 30 85 50" stroke="#FF5E97" stroke-width="8" fill="none"/><path d="M 50 15 Q 30 50 50 85" stroke="#FFD124" stroke-width="8" fill="none"/></svg>` },
+      { id: 'teddy', cat: 'toys', bm: 'Beruang Mainan', en: 'Teddy Bear', color: '#B07D62', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><circle cx="30" cy="30" r="12" fill="#B07D62" stroke="#6F452A" stroke-width="3"/><circle cx="70" cy="30" r="12" fill="#B07D62" stroke="#6F452A" stroke-width="3"/><circle cx="50" cy="56" r="30" fill="#B07D62" stroke="#6F452A" stroke-width="4"/><ellipse cx="50" cy="62" rx="14" ry="10" fill="#E6CCB2"/><circle cx="50" cy="58" r="4" fill="#331800"/><circle cx="40" cy="48" r="3.5" fill="#222"/><circle cx="60" cy="48" r="3.5" fill="#222"/></svg>` },
+      { id: 'balloon', cat: 'toys', bm: 'Belon', en: 'Balloon', color: '#FF3366', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><ellipse cx="50" cy="42" rx="28" ry="32" fill="#FF3366" stroke="#B80C38" stroke-width="4"/><polygon points="46,74 54,74 50,80" fill="#FF3366"/><path d="M 50 80 Q 45 90 50 96" stroke="#888" stroke-width="2" fill="none"/><ellipse cx="40" cy="30" rx="6" ry="10" fill="#FFF" opacity="0.5" transform="rotate(-20 40 30)"/></svg>` },
+      { id: 'robot', cat: 'toys', bm: 'Robot', en: 'Toy Robot', color: '#4CC9F0', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><rect x="47" y="10" width="6" height="12" fill="#888"/><circle cx="50" cy="10" r="4" fill="#FF5E97"/><rect x="25" y="22" width="50" height="42" fill="#4CC9F0" stroke="#0077B6" stroke-width="4" rx="8"/><circle cx="40" cy="38" r="5" fill="#FFD124"/><circle cx="60" cy="38" r="5" fill="#FFD124"/><rect x="36" y="50" width="28" height="6" fill="#FFF" rx="3"/></svg>` },
+      { id: 'kite', cat: 'toys', bm: 'Layang-layang', en: 'Kite', color: '#FF9E00', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><polygon points="50,15 80,45 50,85 20,45" fill="#FF9E00" stroke="#CC7A00" stroke-width="4"/><line x1="50" y1="15" x2="50" y2="85" stroke="#FFF" stroke-width="2"/><line x1="20" y1="45" x2="80" y2="45" stroke="#FFF" stroke-width="2"/><path d="M 50 85 Q 58 92 52 98" stroke="#CC7A00" stroke-width="2" fill="none"/></svg>` },
+      { id: 'drum', cat: 'toys', bm: 'Gendang', en: 'Toy Drum', color: '#FF5400', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><ellipse cx="50" cy="30" rx="35" ry="14" fill="#FFE58F" stroke="#C05600" stroke-width="3"/><rect x="15" y="30" width="70" height="36" fill="#FF5400" stroke="#C05600" stroke-width="3"/><ellipse cx="50" cy="66" rx="35" ry="14" fill="#FF5400" stroke="#C05600" stroke-width="3"/><line x1="25" y1="36" x2="45" y2="66" stroke="#FFF" stroke-width="2"/><line x1="45" y1="66" x2="65" y2="36" stroke="#FFF" stroke-width="2"/><line x1="65" y1="36" x2="85" y2="66" stroke="#FFF" stroke-width="2"/></svg>` },
+
+      // 5. KENDERAAN / VEHICLES (6 item)
+      { id: 'car', cat: 'vehicles', bm: 'Kereta', en: 'Car', color: '#F72585', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><path d="M 20 60 L 30 38 L 70 38 L 82 60 Z" fill="#4CC9F0" stroke="#0077B6" stroke-width="3"/><rect x="12" y="55" width="76" height="22" fill="#F72585" stroke="#A80D53" stroke-width="4" rx="8"/><circle cx="28" cy="77" r="10" fill="#333" stroke="#FFF" stroke-width="3"/><circle cx="72" cy="77" r="10" fill="#333" stroke="#FFF" stroke-width="3"/></svg>` },
+      { id: 'boat', cat: 'vehicles', bm: 'Bot', en: 'Sailboat', color: '#3A86FF', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><path d="M 15 62 L 85 62 L 72 82 L 28 82 Z" fill="#FFD124" stroke="#D48800" stroke-width="3"/><line x1="50" y1="18" x2="50" y2="62" stroke="#78350F" stroke-width="4"/><polygon points="50,20 78,52 50,52" fill="#3A86FF"/><polygon points="46,26 22,52 46,52" fill="#FF5E97"/></svg>` },
+      { id: 'plane', cat: 'vehicles', bm: 'Kapal Terbang', en: 'Airplane', color: '#4895EF', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><ellipse cx="50" cy="50" rx="38" ry="12" fill="#4895EF" stroke="#1D4ED8" stroke-width="3"/><polygon points="40,50 30,22 52,50" fill="#3B82F6"/><polygon points="40,50 30,78 52,50" fill="#3B82F6"/><polygon points="78,50 90,32 88,50" fill="#3B82F6"/><circle cx="26" cy="50" r="3" fill="#FFF"/></svg>` },
+      { id: 'train', cat: 'vehicles', bm: 'Kereta Api', en: 'Toy Train', color: '#FF8A3D', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><rect x="18" y="35" width="35" height="35" fill="#FF8A3D" stroke="#C05600" stroke-width="3" rx="4"/><rect x="53" y="45" width="32" height="25" fill="#4DD637" stroke="#2B8A3E" stroke-width="3" rx="4"/><rect x="25" y="42" width="16" height="14" fill="#FFF"/><circle cx="32" cy="74" r="8" fill="#333"/><circle cx="68" cy="74" r="8" fill="#333"/></svg>` },
+      { id: 'rocket', cat: 'vehicles', bm: 'Roket', en: 'Rocket', color: '#E63946', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><path d="M 50 15 C 38 32 38 65 38 75 L 62 75 C 62 65 62 32 50 15 Z" fill="#FFF" stroke="#E63946" stroke-width="4"/><polygon points="38,55 20,72 38,72" fill="#E63946"/><polygon points="62,55 80,72 62,72" fill="#E63946"/><circle cx="50" cy="45" r="8" fill="#4CC9F0" stroke="#0077B6" stroke-width="2"/><polygon points="44,75 56,75 50,90" fill="#FFB703"/></svg>` },
+      { id: 'bus', cat: 'vehicles', bm: 'Bas', en: 'Bus', color: '#FFD124', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><rect x="15" y="30" width="70" height="42" fill="#FFD124" stroke="#D48800" stroke-width="4" rx="8"/><rect x="22" y="38" width="15" height="12" fill="#4CC9F0" rx="2"/><rect x="42" y="38" width="15" height="12" fill="#4CC9F0" rx="2"/><rect x="62" y="38" width="15" height="12" fill="#4CC9F0" rx="2"/><circle cx="32" cy="74" r="8" fill="#333"/><circle cx="68" cy="74" r="8" fill="#333"/></svg>` },
+
+      // 6. ALAM / NATURE (6 item)
+      { id: 'flower', cat: 'nature', bm: 'Bunga', en: 'Flower', color: '#FF5E97', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><circle cx="50" cy="30" r="14" fill="#FF5E97"/><circle cx="70" cy="50" r="14" fill="#FF5E97"/><circle cx="50" cy="70" r="14" fill="#FF5E97"/><circle cx="30" cy="50" r="14" fill="#FF5E97"/><circle cx="50" cy="50" r="16" fill="#FFD124" stroke="#D48800" stroke-width="3"/><circle cx="45" cy="47" r="2.5" fill="#333"/><circle cx="55" cy="47" r="2.5" fill="#333"/><path d="M 47 54 Q 50 58 53 54" stroke="#333" stroke-width="2" fill="none"/></svg>` },
+      { id: 'leaf', cat: 'nature', bm: 'Daun', en: 'Leaf', color: '#4DD637', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><path d="M 20 80 C 20 30 50 15 80 15 C 80 65 50 80 20 80 Z" fill="#4DD637" stroke="#2B8A3E" stroke-width="4"/><path d="M 20 80 Q 50 50 80 15" stroke="#2B8A3E" stroke-width="3" fill="none"/></svg>` },
+      { id: 'star', cat: 'nature', bm: 'Bintang', en: 'Star', color: '#FFD124', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><polygon points="50,12 61,38 88,38 66,54 74,80 50,64 26,80 34,54 12,38 39,38" fill="#FFD124" stroke="#D48800" stroke-width="4"/><circle cx="42" cy="46" r="3.5" fill="#4D2600"/><circle cx="58" cy="46" r="3.5" fill="#4D2600"/><path d="M 46 54 Q 50 58 54 54" stroke="#4D2600" stroke-width="2" fill="none"/></svg>` },
+      { id: 'sun', cat: 'nature', bm: 'Matahari', en: 'Sun', color: '#FF9E00', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><circle cx="50" cy="50" r="26" fill="#FFD124" stroke="#FF9E00" stroke-width="4"/><path d="M 50 12 L 50 20 M 50 80 L 50 88 M 12 50 L 20 50 M 80 50 L 88 50 M 24 24 L 30 30 M 70 70 L 76 76 M 24 76 L 30 70 M 70 30 L 76 24" stroke="#FF9E00" stroke-width="4" stroke-linecap="round"/><circle cx="43" cy="46" r="3" fill="#4D2600"/><circle cx="57" cy="46" r="3" fill="#4D2600"/></svg>` },
+      // Grafik Bulan Chibi (Bulan Sabit Comel Tersenyum)
+      { id: 'moon', cat: 'nature', bm: 'Bulan', en: 'Moon', color: '#FFD124', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><path d="M 55 12 C 72 22 80 44 76 66 C 72 82 58 92 40 92 C 30 92 22 88 16 82 C 36 82 52 70 56 50 C 60 32 52 18 55 12 Z" fill="#FFD124" stroke="#D48800" stroke-width="4" stroke-linejoin="round"/><circle cx="44" cy="52" r="3.5" fill="#4D2600"/><ellipse cx="36" cy="58" rx="4" ry="2.5" fill="#FF7B90" opacity="0.7"/><path d="M 44 60 Q 48 64 52 61" stroke="#4D2600" stroke-width="2.5" stroke-linecap="round" fill="none"/><polygon points="76,24 78,30 84,30 79,34 81,40 76,36 71,40 73,34 68,30 74,30" fill="#FFF" opacity="0.9"/></svg>` },
+      { id: 'mushroom', cat: 'nature', bm: 'Cendawan', en: 'Mushroom', color: '#E63946', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><rect x="42" y="52" width="16" height="34" fill="#FFFDF5" stroke="#DDD" stroke-width="3" rx="6"/><path d="M 16 55 C 16 26 84 26 84 55 Z" fill="#E63946" stroke="#9B111E" stroke-width="4"/><circle cx="34" cy="40" r="5" fill="#FFF"/><circle cx="64" cy="38" r="6" fill="#FFF"/><circle cx="50" cy="46" r="4" fill="#FFF"/></svg>` },
+
+      // 7. BARANG SEKOLAH / SCHOOL OBJECTS (6 item)
+      { id: 'pencil', cat: 'school', bm: 'Pensel', en: 'Pencil', color: '#FFD124', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><polygon points="20,80 32,80 20,68" fill="#333"/><polygon points="20,80 40,80 20,60" fill="#E9C46A"/><rect x="30" y="30" width="20" height="50" fill="#FFD124" stroke="#D48800" stroke-width="3" transform="rotate(45 40 55)"/><rect x="52" y="8" width="20" height="12" fill="#FF5E97" stroke="#A80D53" stroke-width="3" transform="rotate(45 62 14)"/></svg>` },
+      { id: 'book', cat: 'school', bm: 'Buku', en: 'Book', color: '#3A86FF', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><path d="M 20 25 C 35 20 50 28 50 80 C 35 72 20 78 20 25 Z" fill="#3A86FF" stroke="#1D4ED8" stroke-width="3"/><path d="M 80 25 C 65 20 50 28 50 80 C 65 72 80 78 80 25 Z" fill="#60A5FA" stroke="#1D4ED8" stroke-width="3"/><line x1="50" y1="28" x2="50" y2="80" stroke="#1D4ED8" stroke-width="4"/></svg>` },
+      { id: 'crayon', cat: 'school', bm: 'Krayon', en: 'Crayon', color: '#9D4EDD', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><polygon points="50,15 35,32 65,32" fill="#9D4EDD" stroke="#5A189A" stroke-width="3"/><rect x="35" y="32" width="30" height="55" fill="#9D4EDD" stroke="#5A189A" stroke-width="3" rx="2"/><rect x="35" y="45" width="30" height="20" fill="#333"/><circle cx="50" cy="55" r="5" fill="#FFF"/></svg>` },
+      { id: 'ruler', cat: 'school', bm: 'Pembaris', en: 'Ruler', color: '#FFE066', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><rect x="18" y="36" width="64" height="26" fill="#FFE066" stroke="#D48800" stroke-width="3" rx="3"/><line x1="28" y1="36" x2="28" y2="46" stroke="#78350F" stroke-width="2"/><line x1="38" y1="36" x2="38" y2="50" stroke="#78350F" stroke-width="2"/><line x1="48" y1="36" x2="48" y2="46" stroke="#78350F" stroke-width="2"/><line x1="58" y1="36" x2="58" y2="50" stroke="#78350F" stroke-width="2"/><line x1="68" y1="36" x2="68" y2="46" stroke="#78350F" stroke-width="2"/></svg>` },
+      { id: 'eraser', cat: 'school', bm: 'Pemadam', en: 'Eraser', color: '#FF70A6', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><polygon points="25,40 55,20 80,45 50,65" fill="#FF70A6" stroke="#D81159" stroke-width="3"/><polygon points="25,40 50,65 42,78 18,52" fill="#4CC9F0" stroke="#0077B6" stroke-width="3"/><polygon points="50,65 80,45 72,58 42,78" fill="#4895EF" stroke="#0077B6" stroke-width="3"/></svg>` },
+      { id: 'backpack', cat: 'school', bm: 'Beg Sekolah', en: 'Backpack', color: '#FF6B6B', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><rect x="24" y="30" width="52" height="52" fill="#FF6B6B" stroke="#C92A2A" stroke-width="4" rx="16"/><path d="M 38 30 C 38 18 62 18 62 30" stroke="#C92A2A" stroke-width="4" fill="none"/><rect x="32" y="52" width="36" height="22" fill="#4ECDC4" stroke="#2B8A3E" stroke-width="3" rx="6"/></svg>` },
+
+      // 8. BARANG HARIAN / EVERYDAY OBJECTS (6 item)
+      { id: 'heart', cat: 'everyday', bm: 'Hati', en: 'Heart', color: '#FF3366', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><path d="M 50 82 C 20 60 12 40 22 26 C 32 14 46 20 50 30 C 54 20 68 14 78 26 C 88 40 80 60 50 82 Z" fill="#FF3366" stroke="#B80C38" stroke-width="4"/><circle cx="38" cy="44" r="3.5" fill="#33000C"/><circle cx="62" cy="44" r="3.5" fill="#33000C"/><path d="M 45 52 Q 50 56 55 52" stroke="#33000C" stroke-width="2.5" fill="none"/></svg>` },
+      { id: 'bell', cat: 'everyday', bm: 'Loceng', en: 'Bell', color: '#FFD124', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><path d="M 50 20 C 34 20 28 55 20 68 L 80 68 C 72 55 66 20 50 20 Z" fill="#FFD124" stroke="#D48800" stroke-width="4"/><circle cx="50" cy="74" r="7" fill="#E09F3E"/><circle cx="50" cy="16" r="4" fill="#D48800"/></svg>` },
+      { id: 'cup', cat: 'everyday', bm: 'Cawan', en: 'Cup', color: '#4EA8DE', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><path d="M 28 35 L 34 78 L 66 78 L 72 35 Z" fill="#4EA8DE" stroke="#0077B6" stroke-width="4"/><path d="M 70 42 C 85 45 85 65 68 68" stroke="#0077B6" stroke-width="4" fill="none"/><circle cx="44" cy="52" r="3" fill="#003566"/><circle cx="56" cy="52" r="3" fill="#003566"/></svg>` },
+      { id: 'crown', cat: 'everyday', bm: 'Mahkota', en: 'Crown', color: '#FFD124', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><polygon points="18,70 82,70 85,35 65,52 50,25 35,52 15,35" fill="#FFD124" stroke="#D48800" stroke-width="4"/><circle cx="15" cy="35" r="4" fill="#FF5E97"/><circle cx="50" cy="25" r="4" fill="#3A86FF"/><circle cx="85" cy="35" r="4" fill="#4DD637"/></svg>` },
+      { id: 'gift', cat: 'everyday', bm: 'Hadiah', en: 'Gift Box', color: '#FF5E97', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><rect x="22" y="42" width="56" height="42" fill="#FF5E97" stroke="#A80D53" stroke-width="4" rx="4"/><rect x="18" y="32" width="64" height="14" fill="#FF7BB0" stroke="#A80D53" stroke-width="3" rx="3"/><rect x="46" y="32" width="8" height="52" fill="#FFD124"/><ellipse cx="44" cy="26" rx="6" ry="5" fill="#FFD124"/><ellipse cx="56" cy="26" rx="6" ry="5" fill="#FFD124"/></svg>` },
+      { id: 'clock', cat: 'everyday', bm: 'Jam', en: 'Clock', color: '#52C42B', svg: `<svg viewBox="0 0 100 100" class="w-full h-full drop-shadow"><circle cx="50" cy="50" r="34" fill="#FFFDF5" stroke="#52C42B" stroke-width="5"/><line x1="50" y1="50" x2="50" y2="28" stroke="#333" stroke-width="4" stroke-linecap="round"/><line x1="50" y1="50" x2="68" y2="50" stroke="#E63946" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="4" fill="#333"/></svg>` }
+    ];
+
+    const CAT_NAMES = {
+      fruits: { bm: 'Buah-buahan', en: 'Fruits' },
+      animals: { bm: 'Haiwan', en: 'Animals' },
+      food: { bm: 'Makanan', en: 'Food' },
+      toys: { bm: 'Mainan', en: 'Toys' },
+      vehicles: { bm: 'Kenderaan', en: 'Vehicles' },
+      nature: { bm: 'Alam Semula Jadi', en: 'Nature' },
+      school: { bm: 'Barang Sekolah', en: 'School Objects' },
+      everyday: { bm: 'Barang Harian', en: 'Everyday Objects' }
+    };
+  </script>
+
+  <!-- ==================== PUSTAKA IKON SVG CHIBI COMEL ==================== -->
+  <script>
+    const ICONS = {
+      soundOn: `<svg viewBox="0 0 32 32" class="w-5 h-5 inline-block align-middle"><path d="M14 8L8 12H4C2.9 12 2 12.9 2 14V18C2 19.1 2.9 20 4 20H8L14 24C15.1 24.7 16 24.2 16 23V9C16 7.8 15.1 7.3 14 8Z" fill="#8E52FF" stroke="#480277" stroke-width="2"/><path d="M20 11C21.8 12.3 23 14.5 23 17C23 19.5 21.8 21.7 20 23" stroke="#FF5E97" stroke-width="2.5" stroke-linecap="round" fill="none"/><path d="M24 7C27 9.5 29 13.5 29 17C29 20.5 27 24.5 24 27" stroke="#FFD124" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg>`,
+      
+      soundOff: `<svg viewBox="0 0 32 32" class="w-5 h-5 inline-block align-middle"><path d="M14 8L8 12H4C2.9 12 2 12.9 2 14V18C2 19.1 2.9 20 4 20H8L14 24C15.1 24.7 16 24.2 16 23V9C16 7.8 15.1 7.3 14 8Z" fill="#A0AEC0" stroke="#4A5568" stroke-width="2"/><line x1="19" y1="12" x2="27" y2="20" stroke="#FF5E97" stroke-width="3" stroke-linecap="round"/><line x1="27" y1="12" x2="19" y2="20" stroke="#FF5E97" stroke-width="3" stroke-linecap="round"/></svg>`,
+
+      circus: `<svg viewBox="0 0 32 32" class="w-5 h-5 inline-block align-middle"><polygon points="16,3 16,8 20,5.5" fill="#FF5E97"/><line x1="16" y1="3" x2="16" y2="9" stroke="#78350F" stroke-width="2"/><path d="M5 26 L16 9 L27 26 Z" fill="#FFE053" stroke="#D48800" stroke-width="2"/><path d="M16 9 L11 26 L16 26 Z" fill="#FF5E97"/><path d="M16 9 L21 26 L16 26 Z" fill="#FF5E97"/><path d="M3 26 C3 25 29 25 29 26 L27 29 C27 30 5 30 5 29 Z" fill="#4DD637" stroke="#2B8A3E" stroke-width="1.5"/></svg>`,
+
+      baby: `<svg viewBox="0 0 32 32" class="w-5 h-5 inline-block align-middle"><circle cx="16" cy="16" r="13" fill="#FFE0B2" stroke="#D48800" stroke-width="2"/><circle cx="12" cy="15" r="2" fill="#4D2600"/><circle cx="20" cy="15" r="2" fill="#4D2600"/><circle cx="8" cy="18" r="2.5" fill="#FF7B90" opacity="0.75"/><circle cx="24" cy="18" r="2.5" fill="#FF7B90" opacity="0.75"/><path d="M13 19 Q16 22 19 19" stroke="#4D2600" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M16 3 C14 7 18 8 16 10" stroke="#C05600" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
+
+      house: `<svg viewBox="0 0 32 32" class="w-5 h-5 inline-block align-middle"><polygon points="16,4 4,14 28,14" fill="#FF8A3D" stroke="#C05600" stroke-width="2"/><rect x="7" y="14" width="18" height="14" fill="#FFE58F" stroke="#D48800" stroke-width="2" rx="2"/><rect x="13" y="20" width="6" height="8" fill="#FF5E97" rx="1"/><rect x="22" y="6" width="3" height="6" fill="#A80D53"/></svg>`,
+
+      rocket: `<svg viewBox="0 0 32 32" class="w-5 h-5 inline-block align-middle"><path d="M16 3 C11 9 10 20 10 24 L22 24 C22 20 21 9 16 3 Z" fill="#F72585" stroke="#A80D53" stroke-width="2"/><polygon points="10,18 4,24 10,24" fill="#4CC9F0" stroke="#0077B6" stroke-width="1.5"/><polygon points="22,18 28,24 22,24" fill="#4CC9F0" stroke="#0077B6" stroke-width="1.5"/><circle cx="16" cy="13" r="3.5" fill="#FFE58F" stroke="#D48800" stroke-width="1.5"/><polygon points="13,24 19,24 16,30" fill="#FFD124"/></svg>`,
+
+      rocketBig: `<svg viewBox="0 0 32 32" class="w-12 h-12 inline-block"><path d="M16 3 C11 9 10 20 10 24 L22 24 C22 20 21 9 16 3 Z" fill="#8E52FF" stroke="#480277" stroke-width="2"/><polygon points="10,18 4,24 10,24" fill="#FF5E97" stroke="#A80D53" stroke-width="1.5"/><polygon points="22,18 28,24 22,24" fill="#FF5E97" stroke="#A80D53" stroke-width="1.5"/><circle cx="16" cy="13" r="4" fill="#FFE58F" stroke="#D48800" stroke-width="1.5"/><polygon points="13,24 19,24 16,30" fill="#FFD124"/></svg>`,
+
+      appleBig: `<svg viewBox="0 0 32 32" class="w-12 h-12 inline-block"><path d="M16 7 C16 4 19 3 20 3" stroke="#78350F" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M16 7 C14 5 10 5 9 8 C9 8 14 9 16 7" fill="#4DD637" stroke="#2B8A3E" stroke-width="1"/><path d="M16 10 C11 5 4 8 5 18 C6 26 13 30 16 29 C19 30 26 26 27 18 C28 8 21 5 16 10 Z" fill="#FF4D6D" stroke="#B80C38" stroke-width="2"/><circle cx="12" cy="18" r="1.5" fill="#3A0007"/><circle cx="20" cy="18" r="1.5" fill="#3A0007"/><path d="M14 22 Q16 24 18 22" stroke="#3A0007" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>`,
+
+      palette: `<svg viewBox="0 0 32 32" class="w-5 h-5 inline-block align-middle"><path d="M16 4 C8 4 3 9 3 17 C3 23 8 28 15 28 C17 28 18 27 18 25 C18 24 17.5 23 17.5 22 C17.5 21 18.5 20 20 20 L22 20 C26 20 29 17 29 13 C29 8 23 4 16 4 Z" fill="#FFE58F" stroke="#D48800" stroke-width="2"/><circle cx="9" cy="14" r="2.5" fill="#FF5E97"/><circle cx="15" cy="10" r="2.5" fill="#4DD637"/><circle cx="21" cy="12" r="2.5" fill="#2BC0E4"/><circle cx="24" cy="17" r="2.5" fill="#8E52FF"/></svg>`,
+
+      trophy: `<svg viewBox="0 0 32 32" class="w-5 h-5 inline-block align-middle"><path d="M9 7 L23 7 L21 18 C21 21 18.5 23 16 23 C13.5 23 11 21 11 18 Z" fill="#FFD124" stroke="#D48800" stroke-width="2"/><path d="M9 10 C5 10 5 16 9 16" stroke="#D48800" stroke-width="2" fill="none"/><path d="M23 10 C27 10 27 16 23 16" stroke="#D48800" stroke-width="2" fill="none"/><rect x="14" y="23" width="4" height="4" fill="#D48800"/><rect x="11" y="27" width="10" height="3" fill="#FF8A3D" rx="1.5"/><polygon points="16,11 17.2,13.5 20,13.8 18,15.8 18.5,18.5 16,17.2 13.5,18.5 14,15.8 12,13.8 14.8,13.5" fill="#FFF"/></svg>`,
+
+      profile: `<svg viewBox="0 0 32 32" class="w-5 h-5 inline-block align-middle"><circle cx="16" cy="11" r="6" fill="#FFD124" stroke="#D48800" stroke-width="2"/><circle cx="14" cy="10" r="1.2" fill="#4D2600"/><circle cx="18" cy="10" r="1.2" fill="#4D2600"/><path d="M14 13 Q16 15 18 13" stroke="#4D2600" stroke-width="1.2" fill="none" stroke-linecap="round"/><path d="M8 27 C8 22 11 20 16 20 C21 20 24 22 24 27 Z" fill="#2BC0E4" stroke="#007799" stroke-width="2"/></svg>`,
+
+      star: `<svg viewBox="0 0 32 32" class="w-5 h-5 inline-block align-middle"><polygon points="16,3 19.5,11.5 29,12 21.5,18 24,27 16,22 8,27 10.5,18 3,12 12.5,11.5" fill="#FFD124" stroke="#D48800" stroke-width="2"/><circle cx="13" cy="14" r="1.2" fill="#4D2600"/><circle cx="19" cy="14" r="1.2" fill="#4D2600"/><circle cx="10" cy="16" r="1" fill="#FF7B90" opacity="0.8"/><circle cx="22" cy="16" r="1" fill="#FF7B90" opacity="0.8"/><path d="M14 17 Q16 19 18 17" stroke="#4D2600" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>`,
+
+      starLarge: `<svg viewBox="0 0 32 32" class="w-14 h-14 mx-auto drop-shadow-md"><polygon points="16,3 19.5,11.5 29,12 21.5,18 24,27 16,22 8,27 10.5,18 3,12 12.5,11.5" fill="#FFD124" stroke="#D48800" stroke-width="2"/><circle cx="13" cy="14" r="1.5" fill="#4D2600"/><circle cx="19" cy="14" r="1.5" fill="#4D2600"/><circle cx="9.5" cy="16.5" r="1.5" fill="#FF7B90" opacity="0.85"/><circle cx="22.5" cy="16.5" r="1.5" fill="#FF7B90" opacity="0.85"/><path d="M13.5 17.5 Q16 20 18.5 17.5" stroke="#4D2600" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>`,
+
+      bulb: `<svg viewBox="0 0 32 32" class="w-5 h-5 inline-block align-middle"><path d="M16 4 C11 4 7 8 7 13 C7 17 10 19 12 21 L12 24 L20 24 L20 21 C22 19 25 17 25 13 C25 8 21 4 16 4 Z" fill="#FFE58F" stroke="#D48800" stroke-width="2"/><line x1="13" y1="26" x2="19" y2="26" stroke="#D48800" stroke-width="2"/><line x1="14" y1="28" x2="18" y2="28" stroke="#D48800" stroke-width="2"/><circle cx="13" cy="13" r="1.2" fill="#4D2600"/><circle cx="19" cy="13" r="1.2" fill="#4D2600"/><path d="M14 16 Q16 18 18 16" stroke="#4D2600" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>`,
+
+      party: `<svg viewBox="0 0 32 32" class="w-5 h-5 inline-block align-middle"><polygon points="6,26 14,8 24,18" fill="#FF5E97" stroke="#A80D53" stroke-width="2"/><ellipse cx="19" cy="13" rx="7" ry="4" fill="#FFD124" stroke="#D48800" stroke-width="1.5" transform="rotate(45 19 13)"/><circle cx="24" cy="5" r="2" fill="#4DD637"/><circle cx="29" cy="12" r="1.5" fill="#2BC0E4"/><circle cx="20" cy="2" r="1.5" fill="#FF8A3D"/><circle cx="28" cy="20" r="1.5" fill="#8E52FF"/></svg>`,
+
+      sparkle: `<svg viewBox="0 0 32 32" class="w-5 h-5 inline-block align-middle"><path d="M16 2 C16 9 23 16 30 16 C23 16 16 23 16 30 C16 23 9 16 2 16 C9 16 16 9 16 2 Z" fill="#FFD124" stroke="#D48800" stroke-width="1.5"/></svg>`,
+
+      repeat: `<svg viewBox="0 0 32 32" class="w-5 h-5 inline-block align-middle"><path d="M25 16 A9 9 0 1 1 22.5 9.5 L26 9.5 M26 5 L26 10 L21 10" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`,
+
+      arrowRight: `<svg viewBox="0 0 32 32" class="w-5 h-5 inline-block align-middle"><path d="M8 16 L22 16 M16 9 L23 16 L16 23" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`
+    };
+  </script>
+
+  <!-- ==================== KAMUS DWIBAHASA ==================== -->
+  <script>
+    const I18N = {
+      bm: {
+        appTitle: "JOM TAMBAH",
+        appSubtitle: "Pengembaraan Tambah Bersama NomNom!",
+        profileTitle: "Profil Pengguna",
+        profileDesc: "Masukkan nama anak dan kod keluarga untuk mula!",
+        childNameLabel: "Nama Anak",
+        childNamePlaceholder: "Contoh: Adam",
+        familyCodeLabel: "Kod Keluarga (Pilihan)",
+        familyCodePlaceholder: "Boleh biarkan kosong",
+        languageLabel: "Pilihan Bahasa",
+        startBtn: "Mula Bermain!",
+        welcomeBack: "Selamat Kembali,",
+        chooseCategory: "PILIH KATEGORI",
+        easyTitle: "MUDAH",
+        easySub: "Tambah Bawah 10 (Jumlah 0–9)",
+        proTitle: "PRO",
+        proSub: "Tambah Bawah 20 (Jumlah 10–19)",
+        qCountTitle: "Berapa Banyak Soalan?",
+        q5: "5 Soalan",
+        q10: "10 Soalan",
+        q20: "20 Soalan",
+        qFree: "Main Bebas",
+        startQuestionBtn: "Jom Tambah!",
+        helpBtn: "Bantu",
+        correctFeedback: "Betul!",
+        wrongFeedback: "Jawapan ialah",
+        nextQuestionAuto: "Jom soalan seterusnya!",
+        countAllHint: "Kira semua objek!",
+        combineGroup1: "Kumpulan Pertama",
+        combineGroup2: "Kumpulan Kedua",
+        combineSum: "Jumlah Semua",
+        questionLabel: "SOALAN",
+        correctCount: "Betul:",
+        points: "Mata",
+        menu: "Menu",
+        collectionBtn: "Koleksi Gambar",
+        scoreboardBtn: "Skor Keluarga",
+        changeProfileBtn: "Tukar Profil",
+        collectionTitle: "Koleksi Gambar",
+        collectionDesc: "52 Gambar Chibi Menarik yang dipelajari!",
+        totalItems: "Jumlah Objek",
+        scoreboardTitle: "Skor Keluarga",
+        scoreboardDesc: "Rekod pencapaian ahli keluarga!",
+        noScoresYet: "Belum ada rekod skor. Main sekarang!",
+        categoryLabel: "Kategori:",
+        dateLabel: "Tarikh:",
+        scoreLabel: "Skor:",
+        playAgainBtn: "Main Lagi",
+        finishTitle: "Tahniah!",
+        finishDesc: "Hebat! Kamu telah menyelesaikan pengembaraan tambah!",
+        finalScore: "Jumlah Skor",
+        accuracy: "Ketepatan",
+        backToMenu: "Ke Menu Utama",
+        viewCollection: "Lihat Koleksi",
+        monsterHungry: "NomNom lapar! Jom beri makan!",
+        monsterEating: "Nyam nyam! Sedapnya!",
+        monsterYay: "Yey! Betul kiraan adik!",
+        monsterHmm: "NomNom sedang belajar..."
+      },
+      en: {
+        appTitle: "ADDITION ADVENTURE",
+        appSubtitle: "Fun Addition Adventure with NomNom!",
+        profileTitle: "User Profile",
+        profileDesc: "Enter child name and family code to start!",
+        childNameLabel: "Child Name",
+        childNamePlaceholder: "e.g. Maya",
+        familyCodeLabel: "Family Code (Optional)",
+        familyCodePlaceholder: "Can be left empty",
+        languageLabel: "Choose Language",
+        startBtn: "Let's Play!",
+        welcomeBack: "Welcome Back,",
+        chooseCategory: "CHOOSE CATEGORY",
+        easyTitle: "EASY",
+        easySub: "Addition Under 10 (Total 0–9)",
+        proTitle: "PRO",
+        proSub: "Addition Under 20 (Total 10–19)",
+        qCountTitle: "How Many Questions?",
+        q5: "5 Questions",
+        q10: "10 Questions",
+        q20: "20 Questions",
+        qFree: "Free Play",
+        startQuestionBtn: "Let's Add!",
+        helpBtn: "Help",
+        correctFeedback: "Correct!",
+        wrongFeedback: "The answer is",
+        nextQuestionAuto: "On to next question!",
+        countAllHint: "Count them all!",
+        combineGroup1: "First Group",
+        combineGroup2: "Second Group",
+        combineSum: "Total Combined",
+        questionLabel: "QUESTION",
+        correctCount: "Correct:",
+        points: "Points",
+        menu: "Menu",
+        collectionBtn: "Picture Album",
+        scoreboardBtn: "Family Scoreboard",
+        changeProfileBtn: "Change Profile",
+        collectionTitle: "Picture Collection",
+        collectionDesc: "52 Cute Chibi artworks you have learned!",
+        totalItems: "Total Objects",
+        scoreboardTitle: "Family Scoreboard",
+        scoreboardDesc: "Records & achievements of family members!",
+        noScoresYet: "No score records yet. Play now!",
+        categoryLabel: "Category:",
+        dateLabel: "Date:",
+        scoreLabel: "Score:",
+        playAgainBtn: "Play Again",
+        finishTitle: "Congratulations!",
+        finishDesc: "Awesome! You completed your addition adventure!",
+        finalScore: "Final Score",
+        accuracy: "Accuracy",
+        backToMenu: "Main Menu",
+        viewCollection: "View Album",
+        monsterHungry: "NomNom is hungry! Feed me!",
+        monsterEating: "Nom nom nom! Delicious!",
+        monsterYay: "Yay! You counted correctly!",
+        monsterHmm: "NomNom is learning..."
+      }
+    };
+  </script>
+
+  <!-- ==================== KOMPONEN MASKOT CHIBI (NOMNOM) ==================== -->
+  <script>
+    function renderMonsterSVG(state = 'idle') {
+      let faceSVG = '';
+      let bodyClass = 'anim-monster-idle';
+
+      if (state === 'happy' || state === 'correct') {
+        bodyClass = 'anim-monster-happy';
+        faceSVG = `
+          <path d="M 32 46 Q 38 40 44 46" stroke="#2D1100" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M 56 46 Q 62 40 68 46" stroke="#2D1100" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M 38 56 Q 50 72 62 56 Z" fill="#990000" stroke="#2D1100" stroke-width="3"/>
+          <polygon points="46,56 50,56 48,60" fill="#FFF"/>
+          <circle cx="28" cy="54" r="5" fill="#FF4D6D" opacity="0.7"/>
+          <circle cx="72" cy="54" r="5" fill="#FF4D6D" opacity="0.7"/>
+        `;
+      } else if (state === 'hungry' || state === 'feeding') {
+        faceSVG = `
+          <circle cx="38" cy="45" r="7" fill="#2D1100"/>
+          <circle cx="40" cy="43" r="3" fill="#FFF"/>
+          <circle cx="62" cy="45" r="7" fill="#2D1100"/>
+          <circle cx="64" cy="43" r="3" fill="#FFF"/>
+          <ellipse cx="50" cy="60" rx="9" ry="8" fill="#990000" stroke="#2D1100" stroke-width="3"/>
+          <polygon points="48,52 52,52 50,56" fill="#FFF"/>
+          <circle cx="28" cy="54" r="4.5" fill="#FF4D6D" opacity="0.6"/>
+          <circle cx="72" cy="54" r="4.5" fill="#FF4D6D" opacity="0.6"/>
+        `;
+      } else if (state === 'wrong') {
+        bodyClass = 'anim-monster-wrong';
+        faceSVG = `
+          <circle cx="38" cy="46" r="5" fill="#2D1100"/>
+          <circle cx="62" cy="46" r="5" fill="#2D1100"/>
+          <path d="M 40 62 Q 45 56 50 62 T 60 62" stroke="#2D1100" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M 75 35 Q 80 40 75 44 Q 70 40 75 35" fill="#00B4D8"/>
+        `;
+      } else {
+        faceSVG = `
+          <circle cx="38" cy="46" r="6" fill="#2D1100"/>
+          <circle cx="40" cy="44" r="2.5" fill="#FFF"/>
+          <circle cx="62" cy="46" r="6" fill="#2D1100"/>
+          <circle cx="64" cy="44" r="2.5" fill="#FFF"/>
+          <path d="M 44 58 Q 50 64 56 58" stroke="#2D1100" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="28" cy="52" r="4" fill="#FF4D6D" opacity="0.5"/>
+          <circle cx="72" cy="52" r="4" fill="#FF4D6D" opacity="0.5"/>
+        `;
+      }
+
+      return `
+        <div class="relative w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 ${bodyClass} transition-all duration-300">
+          <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-md">
+            <path d="M 32 25 Q 24 8 16 18 Q 24 28 32 30" fill="#FFD124" stroke="#C79200" stroke-width="3"/>
+            <path d="M 68 25 Q 76 8 84 18 Q 76 28 68 30" fill="#FFD124" stroke="#C79200" stroke-width="3"/>
+            <circle cx="16" cy="18" r="4" fill="#FF5E97"/>
+            <circle cx="84" cy="18" r="4" fill="#FF5E97"/>
+            
+            <ellipse cx="50" cy="56" rx="36" ry="34" fill="#8E52FF" stroke="#480277" stroke-width="4"/>
+            <ellipse cx="50" cy="65" rx="22" ry="18" fill="#D6B8FF"/>
+            <circle cx="42" cy="65" r="2.5" fill="#B584FF"/>
+            <circle cx="58" cy="65" r="2.5" fill="#B584FF"/>
+            <circle cx="50" cy="72" r="2" fill="#B584FF"/>
+
+            <ellipse cx="34" cy="88" rx="10" ry="6" fill="#FFD124" stroke="#C79200" stroke-width="3"/>
+            <ellipse cx="66" cy="88" rx="10" ry="6" fill="#FFD124" stroke="#C79200" stroke-width="3"/>
+
+            ${faceSVG}
+
+            <ellipse cx="20" cy="62" rx="7" ry="5" fill="#8E52FF" stroke="#480277" stroke-width="3" transform="rotate(20 20 62)"/>
+            <ellipse cx="80" cy="62" rx="7" ry="5" fill="#8E52FF" stroke="#480277" stroke-width="3" transform="rotate(-20 80 62)"/>
+          </svg>
+        </div>
+      `;
+    }
+  </script>
+
+  <!-- ==================== ENJIN LOGIK DAN KEADAAN PERMAINAN ==================== -->
+  <script>
+    class AdditionAdventure {
+      constructor() {
+        this.lang = 'bm';
+        this.profile = {
+          name: '',
+          familyCode: ''
+        };
+        this.category = 'mudah';
+        this.questionMode = 10;
+        
+        this.currentQuestionIndex = 0;
+        this.totalQuestions = 10;
+        this.score = 0;
+        this.correctCount = 0;
+        this.currentQuestion = null;
+        this.questionFingerprints = [];
+        this.monsterState = 'idle';
+        this.hintActive = false;
+        this.isProcessingAnswer = false;
+
+        this.loadStorage();
+      }
+
+      loadStorage() {
+        try {
+          const savedLang = localStorage.getItem('jt_lang');
+          if (savedLang === 'bm' || savedLang === 'en') {
+            this.lang = savedLang;
+          }
+          const savedProfile = localStorage.getItem('jt_profile');
+          if (savedProfile) {
+            this.profile = JSON.parse(savedProfile);
+            if (!this.profile.familyCode) this.profile.familyCode = '';
+          }
+          const savedCat = localStorage.getItem('jt_last_category');
+          if (savedCat === 'mudah' || savedCat === 'pro') {
+            this.category = savedCat;
+          }
+          const savedFingerprints = localStorage.getItem('jt_fingerprints');
+          if (savedFingerprints) {
+            this.questionFingerprints = JSON.parse(savedFingerprints);
+          }
+        } catch (e) {
+          console.warn('Ralat LocalStorage:', e);
+        }
+      }
+
+      saveStorage() {
+        try {
+          localStorage.setItem('jt_lang', this.lang);
+          localStorage.setItem('jt_profile', JSON.stringify(this.profile));
+          localStorage.setItem('jt_last_category', this.category);
+          localStorage.setItem('jt_fingerprints', JSON.stringify(this.questionFingerprints.slice(-40)));
+        } catch (e) {
+          console.warn('Ralat simpan LocalStorage:', e);
+        }
+      }
+
+      saveScoreRecord() {
+        if (!this.profile.name) return;
+        try {
+          const raw = localStorage.getItem('jt_scores');
+          const list = raw ? JSON.parse(raw) : [];
+          const record = {
+            id: 'rec_' + Date.now(),
+            childName: this.profile.name,
+            familyCode: this.profile.familyCode || '',
+            score: this.score,
+            correct: this.correctCount,
+            totalQ: this.questionMode === 'free' ? this.currentQuestionIndex : this.totalQuestions,
+            category: this.category,
+            date: new Date().toLocaleDateString(this.lang === 'bm' ? 'ms-MY' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' })
+          };
+          list.unshift(record);
+          localStorage.setItem('jt_scores', JSON.stringify(list.slice(0, 50)));
+        } catch (e) {
+          console.warn('Ralat simpan skor:', e);
+        }
+      }
+
+      getScores() {
+        try {
+          const raw = localStorage.getItem('jt_scores');
+          return raw ? JSON.parse(raw) : [];
+        } catch (e) {
+          return [];
+        }
+      }
+
+      t(key) {
+        return (I18N[this.lang] && I18N[this.lang][key]) || key;
+      }
+
+      setLanguage(newLang) {
+        sound.playTap();
+        this.lang = newLang;
+        this.saveStorage();
+        this.updateLangButtons();
+        this.refreshCurrentScreen();
+      }
+
+      updateLangButtons() {
+        const btnBM = document.getElementById('langBM');
+        const btnEN = document.getElementById('langEN');
+        const titleEl = document.getElementById('topAppTitle');
+        if (btnBM && btnEN) {
+          if (this.lang === 'bm') {
+            btnBM.className = "px-2.5 py-1 rounded-xl text-xs font-bold transition-all bg-brand-pink text-white shadow-sm";
+            btnEN.className = "px-2.5 py-1 rounded-xl text-xs font-bold transition-all text-gray-700 hover:text-brand-pink";
+            titleEl.textContent = "JOM TAMBAH";
+          } else {
+            btnEN.className = "px-2.5 py-1 rounded-xl text-xs font-bold transition-all bg-brand-pink text-white shadow-sm";
+            btnBM.className = "px-2.5 py-1 rounded-xl text-xs font-bold transition-all text-gray-700 hover:text-brand-pink";
+            titleEl.textContent = "ADDITION ADVENTURE";
+          }
+        }
+      }
+
+      toggleSound() {
+        sound.muted = !sound.muted;
+        const icon = document.getElementById('soundIcon');
+        if (icon) {
+          icon.innerHTML = sound.muted ? ICONS.soundOff : ICONS.soundOn;
+        }
+      }
+
+      refreshCurrentScreen() {
+        const container = document.getElementById('mainScreenContainer');
+        if (!container) return;
+        const view = container.dataset.view;
+        if (view === 'profile') this.showProfileScreen();
+        else if (view === 'home') this.showHomeScreen();
+        else if (view === 'gameplay') this.renderGameplayUI();
+        else if (view === 'result') this.showResultScreen();
+        else if (view === 'collection') this.showCollectionScreen();
+        else if (view === 'scoreboard') this.showScoreboardScreen();
+        else this.showHomeScreen();
+      }
+
+      goToHome() {
+        sound.playTap();
+        this.showHomeScreen();
+      }
+
+      // ==================== SKRIN 1: PROFIL PENGGUNA ====================
+      showProfileScreen() {
+        const container = document.getElementById('mainScreenContainer');
+        container.dataset.view = 'profile';
+        document.getElementById('navHomeBtn').classList.add('hidden');
+
+        container.innerHTML = `
+          <div class="w-full max-w-md bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border-4 border-yellow-300 relative text-center anim-pop">
+            <div class="absolute -top-10 left-1/2 -translate-x-1/2">
+              ${renderMonsterSVG('idle')}
+            </div>
+
+            <div class="mt-8 mb-4">
+              <h1 class="heading-font text-2xl sm:text-3xl text-brand-pink drop-shadow-sm">${this.t('profileTitle')}</h1>
+              <p class="text-sm font-semibold text-gray-600 mt-1">${this.t('profileDesc')}</p>
+            </div>
+
+            <form id="profileForm" onsubmit="event.preventDefault(); game.submitProfile();" class="space-y-4 text-left">
+              <div>
+                <label class="flex items-center gap-1.5 text-xs font-bold text-gray-700 mb-1 uppercase tracking-wide">
+                  ${ICONS.baby} <span>${this.t('childNameLabel')}</span> <span class="text-red-500">*</span>
+                </label>
+                <input type="text" id="profNameInput" required maxlength="18" value="${this.profile.name || ''}" placeholder="${this.t('childNamePlaceholder')}" class="w-full px-4 py-3 rounded-2xl border-2 border-orange-300 focus:border-brand-pink focus:outline-none font-bold text-gray-800 text-base shadow-inner bg-amber-50/50">
+              </div>
+
+              <div>
+                <label class="flex items-center gap-1.5 text-xs font-bold text-gray-700 mb-1 uppercase tracking-wide">
+                  ${ICONS.house} <span>${this.t('familyCodeLabel')}</span>
+                </label>
+                <input type="text" id="profFamilyInput" maxlength="12" value="${this.profile.familyCode || ''}" placeholder="${this.t('familyCodePlaceholder')}" class="w-full px-4 py-3 rounded-2xl border-2 border-blue-300 focus:border-brand-purple focus:outline-none font-bold text-gray-800 text-base shadow-inner bg-blue-50/40">
+              </div>
+
+              <div class="pt-2">
+                <button type="submit" class="w-full py-3.5 rounded-2xl text-lg font-bold text-white btn-3d btn-3d-green heading-font tracking-wider flex items-center justify-center gap-2">
+                  <span>${this.t('startBtn')}</span> ${ICONS.rocket}
+                </button>
+              </div>
+            </form>
+          </div>
+        `;
+      }
+
+      submitProfile() {
+        const nameVal = document.getElementById('profNameInput').value.trim();
+        const famVal = document.getElementById('profFamilyInput').value.trim();
+        if (!nameVal) return;
+        sound.playTap();
+        this.profile.name = nameVal;
+        this.profile.familyCode = famVal;
+        this.saveStorage();
+        this.showHomeScreen();
+      }
+
+      // ==================== SKRIN 2: LAMAN UTAMA / PILIH KATEGORI ====================
+      showHomeScreen() {
+        if (!this.profile.name) {
+          this.showProfileScreen();
+          return;
+        }
+
+        const container = document.getElementById('mainScreenContainer');
+        container.dataset.view = 'home';
+        document.getElementById('navHomeBtn').classList.add('hidden');
+
+        const familyBadge = this.profile.familyCode 
+          ? `<span class="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-sans font-bold border border-amber-300">${this.profile.familyCode}</span>` 
+          : '';
+
+        container.innerHTML = `
+          <div class="w-full max-w-2xl bg-white/95 backdrop-blur-md rounded-3xl p-5 sm:p-7 shadow-2xl border-4 border-yellow-300 relative anim-pop">
+            
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 border-b-2 border-dashed border-amber-200 pb-4">
+              <div class="flex items-center gap-3">
+                ${renderMonsterSVG('idle')}
+                <div>
+                  <div class="text-xs font-bold text-gray-500 uppercase tracking-wider">${this.t('welcomeBack')}</div>
+                  <div class="heading-font text-2xl text-brand-purple flex items-center gap-1.5">
+                    ${this.profile.name} ${familyBadge}
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <button onclick="game.showCollectionScreen()" class="p-2.5 bg-pink-100 hover:bg-pink-200 border-2 border-pink-400 text-pink-700 rounded-2xl font-bold text-xs flex items-center gap-1.5 shadow-sm active:scale-95 transition-all">
+                  ${ICONS.palette} <span class="hidden sm:inline">${this.t('collectionBtn')}</span>
+                </button>
+                <button onclick="game.showScoreboardScreen()" class="p-2.5 bg-amber-100 hover:bg-amber-200 border-2 border-amber-400 text-amber-800 rounded-2xl font-bold text-xs flex items-center gap-1.5 shadow-sm active:scale-95 transition-all">
+                  ${ICONS.trophy} <span class="hidden sm:inline">${this.t('scoreboardBtn')}</span>
+                </button>
+                <button onclick="game.showProfileScreen()" class="p-2.5 bg-blue-100 hover:bg-blue-200 border-2 border-blue-400 text-blue-800 rounded-2xl font-bold text-xs flex items-center gap-1 shadow-sm active:scale-95 transition-all">
+                  ${ICONS.profile}
+                </button>
+              </div>
+            </div>
+
+            <div class="text-center my-4">
+              <h2 class="heading-font text-xl sm:text-2xl text-brand-orange tracking-wide">${this.t('chooseCategory')}</h2>
+              <p class="text-xs font-bold text-gray-500">${this.lang === 'bm' ? 'Pilih jenis tambah yang ingin dipelajari:' : 'Choose the addition level you want to explore:'}</p>
+            </div>
+
+            <!-- Kad Kategori Mudah dan Pro dengan Ikon SVG Comel -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+              
+              <!-- KATEGORI MUDAH -->
+              <div onclick="game.selectCategoryAndConfig('mudah')" class="cursor-pointer group bg-gradient-to-b from-amber-50 to-orange-50 hover:from-yellow-100 hover:to-orange-100 border-4 ${this.category === 'mudah' ? 'border-brand-orange scale-[1.02] shadow-lg' : 'border-orange-300 shadow-md'} rounded-3xl p-4 text-center transition-all duration-200 active:scale-95 relative overflow-hidden">
+                <div class="absolute top-2 right-2 bg-orange-500 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">3-4 Tahun</div>
+                <div class="w-16 h-16 mx-auto mb-2 bg-yellow-200 border-2 border-yellow-400 rounded-2xl flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
+                  ${ICONS.appleBig}
+                </div>
+                <h3 class="heading-font text-2xl text-brand-orange mb-1">${this.t('easyTitle')}</h3>
+                <div class="text-xs font-extrabold text-amber-900 bg-amber-200/80 rounded-xl py-1 px-2 inline-block mb-1">
+                  ${this.t('easySub')}
+                </div>
+                <p class="text-xs font-semibold text-gray-600">${this.lang === 'bm' ? 'Visual penuh & kiraan gabung objek comel.' : 'Full visual object support & gentle counting.'}</p>
+              </div>
+
+              <!-- KATEGORI PRO -->
+              <div onclick="game.selectCategoryAndConfig('pro')" class="cursor-pointer group bg-gradient-to-b from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 border-4 ${this.category === 'pro' ? 'border-brand-purple scale-[1.02] shadow-lg' : 'border-purple-300 shadow-md'} rounded-3xl p-4 text-center transition-all duration-200 active:scale-95 relative overflow-hidden">
+                <div class="absolute top-2 right-2 bg-purple-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">4-6 Tahun</div>
+                <div class="w-16 h-16 mx-auto mb-2 bg-purple-200 border-2 border-purple-400 rounded-2xl flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
+                  ${ICONS.rocketBig}
+                </div>
+                <h3 class="heading-font text-2xl text-brand-purple mb-1">${this.t('proTitle')}</h3>
+                <div class="text-xs font-extrabold text-purple-900 bg-purple-200/80 rounded-xl py-1 px-2 inline-block mb-1">
+                  ${this.t('proSub')}
+                </div>
+                <p class="text-xs font-semibold text-gray-600">${this.lang === 'bm' ? 'Cabaran tambah nombor sehingga 19!' : 'Challenge addition equations up to 19!'}</p>
+              </div>
+
+            </div>
+
+            <!-- Pemilih Bilangan Soalan -->
+            <div class="bg-amber-50/80 rounded-2xl p-3 border-2 border-amber-200 mb-4">
+              <div class="text-xs font-bold text-center text-amber-900 mb-2 uppercase tracking-wide">
+                ${this.t('qCountTitle')}
+              </div>
+              <div class="grid grid-cols-4 gap-1.5 sm:gap-2">
+                <button onclick="game.setQuestionCount(5)" id="qc_5" class="py-2 rounded-xl text-xs sm:text-sm font-bold border-2 transition-all ${this.questionMode === 5 ? 'bg-brand-pink text-white border-brand-pink shadow' : 'bg-white text-gray-700 border-gray-300 hover:border-pink-300'}">${this.t('q5')}</button>
+                <button onclick="game.setQuestionCount(10)" id="qc_10" class="py-2 rounded-xl text-xs sm:text-sm font-bold border-2 transition-all ${this.questionMode === 10 ? 'bg-brand-pink text-white border-brand-pink shadow' : 'bg-white text-gray-700 border-gray-300 hover:border-pink-300'}">${this.t('q10')}</button>
+                <button onclick="game.setQuestionCount(20)" id="qc_20" class="py-2 rounded-xl text-xs sm:text-sm font-bold border-2 transition-all ${this.questionMode === 20 ? 'bg-brand-pink text-white border-brand-pink shadow' : 'bg-white text-gray-700 border-gray-300 hover:border-pink-300'}">${this.t('q20')}</button>
+                <button onclick="game.setQuestionCount('free')" id="qc_free" class="py-2 rounded-xl text-xs sm:text-sm font-bold border-2 transition-all ${this.questionMode === 'free' ? 'bg-brand-pink text-white border-brand-pink shadow' : 'bg-white text-gray-700 border-gray-300 hover:border-pink-300'}">${this.t('qFree')}</button>
+              </div>
+            </div>
+
+            <!-- Butang Mula Besar -->
+            <button onclick="game.startAdditionGame()" class="w-full py-4 rounded-2xl text-xl font-bold text-white btn-3d btn-3d-yellow heading-font tracking-wider flex items-center justify-center gap-2">
+              ${ICONS.circus} <span>${this.t('startQuestionBtn')}</span>
+            </button>
+
+          </div>
+        `;
+      }
+
+      selectCategoryAndConfig(cat) {
+        sound.playTap();
+        this.category = cat;
+        this.saveStorage();
+        this.showHomeScreen();
+      }
+
+      setQuestionCount(cnt) {
+        sound.playTap();
+        this.questionMode = cnt;
+        this.showHomeScreen();
+      }
+
+      startAdditionGame() {
+        sound.playTap();
+        this.currentQuestionIndex = 0;
+        this.totalQuestions = this.questionMode === 'free' ? 9999 : this.questionMode;
+        this.score = 0;
+        this.correctCount = 0;
+        this.hintActive = false;
+        this.monsterState = 'hungry';
+        this.nextQuestion();
+      }
+
+      generateUniqueQuestion() {
+        let attempts = 0;
+        let q = null;
+
+        while (attempts < 50) {
+          attempts++;
+          let num1, num2, total;
+
+          if (this.category === 'mudah') {
+            total = Math.floor(Math.random() * 8) + 2;
+            num1 = Math.floor(Math.random() * (total - 1)) + 1;
+            num2 = total - num1;
+          } else {
+            total = Math.floor(Math.random() * 10) + 10;
+            num1 = Math.floor(Math.random() * (total - 2)) + 1;
+            if (num1 > 12) num1 = 12;
+            num2 = total - num1;
+            if (num2 <= 0 || num2 >= 19) continue;
+          }
+
+          const artwork = ARTWORKS[Math.floor(Math.random() * ARTWORKS.length)];
+          const fingerprint = `${this.category}_${num1}+${num2}_${artwork.id}`;
+
+          if (!this.questionFingerprints.includes(fingerprint) || attempts > 40) {
+            const choices = this.generateDistractors(total, this.category === 'mudah' ? 3 : 4);
+            q = {
+              num1,
+              num2,
+              total,
+              artwork,
+              fingerprint,
+              choices
+            };
+            this.questionFingerprints.push(fingerprint);
+            break;
+          }
+        }
+
+        return q;
+      }
+
+      generateDistractors(correctAnswer, count = 3) {
+        const set = new Set([correctAnswer]);
+        const offsets = [-2, -1, 1, 2, 3, -3];
+        offsets.sort(() => Math.random() - 0.5);
+
+        for (const off of offsets) {
+          if (set.size >= count) break;
+          const candidate = correctAnswer + off;
+          if (this.category === 'mudah' && (candidate < 0 || candidate > 9)) continue;
+          if (this.category === 'pro' && (candidate < 1 || candidate > 19)) continue;
+          set.add(candidate);
+        }
+
+        let fallback = this.category === 'mudah' ? 1 : 10;
+        while (set.size < count) {
+          if (!set.has(fallback)) set.add(fallback);
+          fallback++;
+        }
+
+        const arr = Array.from(set);
+        arr.sort(() => Math.random() - 0.5);
+        return arr;
+      }
+
+      nextQuestion() {
+        this.currentQuestionIndex++;
+        if (this.questionMode !== 'free' && this.currentQuestionIndex > this.totalQuestions) {
+          this.finishGameSession();
+          return;
+        }
+
+        this.hintActive = false;
+        this.isProcessingAnswer = false;
+        this.monsterState = 'hungry';
+        this.currentQuestion = this.generateUniqueQuestion();
+        this.saveStorage();
+        this.renderGameplayUI();
+
+        setTimeout(() => {
+          sound.playPop(1);
+          setTimeout(() => sound.playPop(1.3), 350);
+        }, 150);
+      }
+
+      // ==================== SKRIN 3: ANTARAMUKA PERMAINAN ====================
+      renderGameplayUI() {
+        const container = document.getElementById('mainScreenContainer');
+        container.dataset.view = 'gameplay';
+        document.getElementById('navHomeBtn').classList.remove('hidden');
+
+        const q = this.currentQuestion;
+        if (!q) {
+          this.showHomeScreen();
+          return;
+        }
+
+        const isEasy = this.category === 'mudah';
+        const progressLabel = this.questionMode === 'free'
+          ? `${this.t('questionLabel')} ${this.currentQuestionIndex}`
+          : `${this.t('questionLabel')} ${this.currentQuestionIndex} / ${this.totalQuestions}`;
+        
+        const catBadgeText = isEasy
+          ? (this.lang === 'bm' ? 'MUDAH' : 'EASY')
+          : 'PRO';
+
+        const objName = this.lang === 'bm' ? q.artwork.bm : q.artwork.en;
+
+        const group1Items = Array.from({ length: q.num1 }).map((_, i) => `
+          <div class="w-8 h-8 sm:w-11 sm:h-11 md:w-12 md:h-12 p-1 bg-amber-100/90 rounded-2xl border-2 border-amber-300 shadow-sm flex items-center justify-center anim-pop" style="animation-delay: ${i * 0.08}s">
+            ${q.artwork.svg}
+          </div>
+        `).join('');
+
+        const group2Items = Array.from({ length: q.num2 }).map((_, i) => `
+          <div class="w-8 h-8 sm:w-11 sm:h-11 md:w-12 md:h-12 p-1 bg-pink-100/90 rounded-2xl border-2 border-pink-300 shadow-sm flex items-center justify-center anim-pop" style="animation-delay: ${0.25 + (i * 0.08)}s">
+            ${q.artwork.svg}
+          </div>
+        `).join('');
+
+        const choicesHtml = q.choices.map(choice => `
+          <button onclick="game.handleAnswer(${choice})" id="choiceBtn_${choice}" class="flex-1 py-3.5 sm:py-4 px-2 sm:px-4 rounded-2xl text-2xl sm:text-3xl font-extrabold text-white btn-3d btn-3d-yellow heading-font tracking-wide active:scale-95 transition-all">
+            ${choice}
+          </button>
+        `).join('');
+
+        container.innerHTML = `
+          <div class="w-full max-w-2xl bg-white/95 backdrop-blur-md rounded-3xl p-4 sm:p-6 shadow-2xl border-4 border-yellow-300 flex flex-col justify-between relative anim-pop">
+            
+            <!-- Bar Status Atas -->
+            <div class="flex items-center justify-between gap-2 pb-3 border-b-2 border-dashed border-amber-200">
+              <div class="flex items-center gap-2">
+                <span class="bg-purple-100 border-2 border-purple-400 text-purple-800 text-xs font-extrabold px-3 py-1 rounded-full uppercase">
+                  ${catBadgeText}
+                </span>
+                <span class="text-xs sm:text-sm font-bold text-gray-700 bg-amber-100/80 px-2.5 py-1 rounded-xl border border-amber-300">
+                  ${progressLabel}
+                </span>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-emerald-800 bg-emerald-100 border border-emerald-300 px-2.5 py-1 rounded-xl">
+                  ${this.t('correctCount')} ${this.correctCount}
+                </span>
+                <span class="heading-font text-brand-orange text-base sm:text-lg flex items-center gap-1.5 bg-amber-50 px-2.5 py-0.5 rounded-xl border border-amber-300">
+                  ${ICONS.star} <span>${this.score}</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Monster dan Reaksi Dialog -->
+            <div class="my-3 sm:my-4 flex flex-col items-center">
+              <div class="w-full flex items-center justify-center gap-3 mb-2">
+                <div id="monsterAvatarContainer">
+                  ${renderMonsterSVG(this.monsterState)}
+                </div>
+                <div id="feedbackBubble" class="bg-amber-100 border-2 border-amber-400 px-3 py-1.5 rounded-2xl text-xs sm:text-sm font-bold text-amber-900 shadow-sm max-w-xs transition-all flex items-center gap-1.5">
+                  ${this.getMonsterDialogue()}
+                </div>
+              </div>
+
+              <!-- Papan Visual Gabungan Objek -->
+              <div id="visualBoard" class="w-full bg-gradient-to-b from-amber-50/80 to-yellow-50/90 rounded-2xl p-2.5 sm:p-4 border-3 border-amber-200 shadow-inner mb-3">
+                <div class="text-[11px] font-bold text-center text-amber-800 mb-1.5 uppercase tracking-wide">
+                  ${this.lang === 'bm' ? `Kira & Tambah: ${objName}` : `Count & Add: ${objName}`}
+                </div>
+
+                <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+                  <div class="flex flex-col items-center bg-white/90 p-2 rounded-2xl border-2 border-amber-300 shadow-sm">
+                    <div class="flex flex-wrap justify-center gap-1 max-w-[140px] sm:max-w-[180px]">
+                      ${group1Items}
+                    </div>
+                    <span class="heading-font text-sm sm:text-base text-amber-700 mt-1 font-bold">${q.num1}</span>
+                  </div>
+
+                  <div class="heading-font text-3xl sm:text-4xl text-brand-pink font-extrabold anim-pulse px-1">
+                    +
+                  </div>
+
+                  <div class="flex flex-col items-center bg-white/90 p-2 rounded-2xl border-2 border-pink-300 shadow-sm">
+                    <div class="flex flex-wrap justify-center gap-1 max-w-[140px] sm:max-w-[180px]">
+                      ${group2Items}
+                    </div>
+                    <span class="heading-font text-sm sm:text-base text-brand-pink mt-1 font-bold">${q.num2}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Kotak Persamaan Matematik -->
+              <div class="w-full bg-white rounded-2xl py-2 px-4 border-3 border-orange-300 shadow-md flex items-center justify-center gap-3 sm:gap-4">
+                <span class="heading-font text-3xl sm:text-4xl text-amber-700">${q.num1}</span>
+                <span class="heading-font text-3xl sm:text-4xl text-brand-pink">+</span>
+                <span class="heading-font text-3xl sm:text-4xl text-brand-pink">${q.num2}</span>
+                <span class="heading-font text-3xl sm:text-4xl text-gray-600">=</span>
+                <span id="equationQuestionMark" class="heading-font text-3xl sm:text-4xl text-brand-purple bg-purple-100 border-2 border-purple-400 px-4 py-0.5 rounded-2xl shadow-inner anim-pulse">?</span>
+              </div>
+
+            </div>
+
+            <!-- Pilihan Jawapan Sentuh -->
+            <div class="w-full space-y-2">
+              <div class="text-center text-xs font-extrabold text-gray-500 uppercase tracking-wide">
+                ${this.lang === 'bm' ? 'Tekan jawapan yang betul:' : 'Tap the correct number:'}
+              </div>
+              <div class="flex items-center justify-center gap-2 sm:gap-3 w-full">
+                ${choicesHtml}
+              </div>
+            </div>
+
+            <!-- Butang Bantuan Bawah dengan Ikon Mentol Comel -->
+            <div class="mt-3 pt-2 border-t border-amber-200 flex justify-between items-center">
+              <button onclick="game.triggerHint()" id="hintBtn" class="px-3.5 py-1.5 bg-sky-100 hover:bg-sky-200 text-sky-800 border-2 border-sky-400 rounded-xl font-bold text-xs flex items-center gap-1.5 shadow-sm active:scale-95 transition-all">
+                ${ICONS.bulb} <span>${this.t('helpBtn')}</span>
+              </button>
+              <div class="text-[11px] font-semibold text-gray-500">
+                ${this.lang === 'bm' ? 'Beri makan NomNom raksasa!' : 'Feed hungry NomNom!'}
+              </div>
+            </div>
+
+          </div>
+        `;
+      }
+
+      getMonsterDialogue() {
+        if (this.monsterState === 'correct' || this.monsterState === 'happy') {
+          return `${ICONS.party} <span>${this.t('monsterYay')}</span>`;
+        }
+        if (this.monsterState === 'feeding') {
+          return `${ICONS.sparkle} <span>${this.t('monsterEating')}</span>`;
+        }
+        if (this.monsterState === 'wrong') {
+          return `${ICONS.bulb} <span>${this.t('monsterHmm')}</span>`;
+        }
+        return `${ICONS.sparkle} <span>${this.t('monsterHungry')}</span>`;
+      }
+
+      triggerHint() {
+        sound.playTap();
+        this.hintActive = true;
+        const board = document.getElementById('visualBoard');
+        const bubble = document.getElementById('feedbackBubble');
+        if (board) {
+          board.classList.add('ring-4', 'ring-brand-yellow', 'bg-yellow-100');
+        }
+        if (bubble) {
+          bubble.innerHTML = `${ICONS.bulb} <span><b>${this.t('countAllHint')}</b> (${this.currentQuestion.num1} + ${this.currentQuestion.num2})</span>`;
+          bubble.classList.remove('bg-amber-100');
+          bubble.classList.add('bg-yellow-200');
+        }
+      }
+
+      handleAnswer(selectedNum) {
+        if (this.isProcessingAnswer) return;
+        const q = this.currentQuestion;
+        if (!q) return;
+
+        this.isProcessingAnswer = true;
+
+        if (selectedNum === q.total) {
+          // ==================== JAWAPAN BETUL ====================
+          this.score += 10;
+          this.correctCount++;
+          this.monsterState = 'happy';
+
+          sound.playBite();
+          setTimeout(() => sound.playCorrect(), 120);
+
+          const eqMark = document.getElementById('equationQuestionMark');
+          if (eqMark) {
+            eqMark.textContent = q.total;
+            eqMark.className = "heading-font text-3xl sm:text-4xl text-emerald-600 bg-emerald-100 border-2 border-emerald-400 px-4 py-0.5 rounded-2xl shadow-inner font-extrabold";
+          }
+
+          const chosenBtn = document.getElementById(`choiceBtn_${selectedNum}`);
+          if (chosenBtn) {
+            chosenBtn.className = "flex-1 py-3.5 sm:py-4 px-2 sm:px-4 rounded-2xl text-2xl sm:text-3xl font-extrabold text-white btn-3d btn-3d-green heading-font tracking-wide";
+          }
+
+          const bubble = document.getElementById('feedbackBubble');
+          if (bubble) {
+            bubble.innerHTML = `<span class="inline-flex items-center justify-center gap-1.5">${ICONS.star} <b>${this.t('correctFeedback')}</b> +10 ${ICONS.star}</span>`;
+            bubble.className = "bg-emerald-100 border-2 border-emerald-400 px-3 py-1.5 rounded-2xl text-xs sm:text-sm font-bold text-emerald-900 shadow-sm max-w-xs anim-pop";
+          }
+
+          const avatar = document.getElementById('monsterAvatarContainer');
+          if (avatar) {
+            avatar.innerHTML = renderMonsterSVG('happy');
+          }
+
+          setTimeout(() => {
+            this.nextQuestion();
+          }, 1400);
+
+        } else {
+          // ==================== JAWAPAN SALAH (TERUS KE SOALAN SETERUSNYA) ====================
+          sound.playWrong();
+          this.monsterState = 'wrong';
+
+          const chosenBtn = document.getElementById(`choiceBtn_${selectedNum}`);
+          if (chosenBtn) {
+            chosenBtn.className = "flex-1 py-3.5 sm:py-4 px-2 sm:px-4 rounded-2xl text-2xl sm:text-3xl font-extrabold text-white btn-3d btn-3d-pink heading-font tracking-wide opacity-80";
+          }
+
+          const correctBtn = document.getElementById(`choiceBtn_${q.total}`);
+          if (correctBtn) {
+            correctBtn.className = "flex-1 py-3.5 sm:py-4 px-2 sm:px-4 rounded-2xl text-2xl sm:text-3xl font-extrabold text-white btn-3d btn-3d-green heading-font tracking-wide ring-4 ring-yellow-300";
+          }
+
+          const eqMark = document.getElementById('equationQuestionMark');
+          if (eqMark) {
+            eqMark.textContent = q.total;
+            eqMark.className = "heading-font text-3xl sm:text-4xl text-amber-600 bg-amber-100 border-2 border-amber-400 px-4 py-0.5 rounded-2xl shadow-inner font-extrabold";
+          }
+
+          const bubble = document.getElementById('feedbackBubble');
+          if (bubble) {
+            bubble.innerHTML = `<span class="inline-flex items-center justify-center gap-1.5">${ICONS.sparkle} <span>${this.t('wrongFeedback')} <b>${q.total}</b>. ${this.t('nextQuestionAuto')}</span> ${ICONS.arrowRight}</span>`;
+            bubble.className = "bg-rose-100 border-2 border-rose-400 px-3 py-1.5 rounded-2xl text-xs sm:text-sm font-bold text-rose-900 shadow-sm max-w-xs anim-pop";
+          }
+
+          const avatar = document.getElementById('monsterAvatarContainer');
+          if (avatar) {
+            avatar.innerHTML = renderMonsterSVG('wrong');
+          }
+
+          setTimeout(() => {
+            this.nextQuestion();
+          }, 1600);
+        }
+      }
+
+      // ==================== SKRIN 4: KEPUTUSAN SESI ====================
+      finishGameSession() {
+        sound.playCelebrate();
+        this.saveScoreRecord();
+
+        const container = document.getElementById('mainScreenContainer');
+        container.dataset.view = 'result';
+        document.getElementById('navHomeBtn').classList.add('hidden');
+
+        const totalQ = this.questionMode === 'free' ? this.currentQuestionIndex - 1 : this.totalQuestions;
+        const familyText = this.profile.familyCode ? `(${this.profile.familyCode})` : '';
+
+        container.innerHTML = `
+          <div class="w-full max-w-md bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border-4 border-yellow-300 text-center relative anim-pop">
+            
+            <div class="mx-auto flex justify-center -mt-10 mb-2">
+              ${renderMonsterSVG('happy')}
+            </div>
+
+            <h2 class="heading-font text-3xl text-brand-pink mb-1">${this.t('finishTitle')}</h2>
+            <p class="text-xs font-bold text-gray-600 mb-5">${this.t('finishDesc')}</p>
+
+            <div class="bg-gradient-to-b from-amber-50 to-orange-50 border-3 border-amber-300 rounded-2xl p-4 mb-5 shadow-inner space-y-2">
+              <div class="text-xs font-extrabold text-amber-900 uppercase tracking-wider">${this.profile.name} ${familyText}</div>
+              
+              <div class="flex justify-around items-center pt-2">
+                <div>
+                  <div class="text-xs font-bold text-gray-500">${this.t('finalScore')}</div>
+                  <div class="heading-font text-3xl text-brand-orange flex items-center justify-center gap-1.5">
+                    ${ICONS.star} <span>${this.score}</span>
+                  </div>
+                </div>
+                <div class="w-px h-10 bg-amber-300"></div>
+                <div>
+                  <div class="text-xs font-bold text-gray-500">${this.t('correctCount')}</div>
+                  <div class="heading-font text-3xl text-emerald-600">${this.correctCount} / ${totalQ}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-2.5">
+              <button onclick="game.startAdditionGame()" class="w-full py-3.5 rounded-2xl text-lg font-bold text-white btn-3d btn-3d-green heading-font tracking-wide flex items-center justify-center gap-2">
+                <span>${this.t('playAgainBtn')}</span> ${ICONS.repeat}
+              </button>
+              <button onclick="game.showHomeScreen()" class="w-full py-3 rounded-2xl text-base font-bold text-white btn-3d btn-3d-yellow heading-font tracking-wide flex items-center justify-center gap-2">
+                ${ICONS.house} <span>${this.t('backToMenu')}</span>
+              </button>
+              <button onclick="game.showCollectionScreen()" class="w-full py-2.5 rounded-2xl text-sm font-bold text-purple-800 bg-purple-100 hover:bg-purple-200 border-2 border-purple-300 transition-all flex items-center justify-center gap-2">
+                ${ICONS.palette} <span>${this.t('viewCollection')}</span>
+              </button>
+            </div>
+
+          </div>
+        `;
+      }
+
+      // ==================== SKRIN 5: KOLEKSI GAMBAR ====================
+      showCollectionScreen(filterCat = 'all') {
+        sound.playTap();
+        const container = document.getElementById('mainScreenContainer');
+        container.dataset.view = 'collection';
+        document.getElementById('navHomeBtn').classList.remove('hidden');
+
+        const filtered = filterCat === 'all' 
+          ? ARTWORKS 
+          : ARTWORKS.filter(a => a.cat === filterCat);
+
+        const categories = ['all', 'fruits', 'animals', 'food', 'toys', 'vehicles', 'nature', 'school', 'everyday'];
+        const filterPills = categories.map(catKey => {
+          const isSelected = filterCat === catKey;
+          let label = this.lang === 'bm' ? 'Semua' : 'All';
+          if (catKey !== 'all') {
+            label = this.lang === 'bm' ? CAT_NAMES[catKey].bm : CAT_NAMES[catKey].en;
+          }
+          return `
+            <button onclick="game.showCollectionScreen('${catKey}')" class="px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap transition-all ${isSelected ? 'bg-brand-pink text-white shadow-sm border-2 border-pink-500' : 'bg-white text-gray-700 border border-gray-300 hover:bg-pink-50'}">
+              ${label}
+            </button>
+          `;
+        }).join('');
+
+        const cardsHtml = filtered.map(item => `
+          <div onclick="game.previewArtwork('${item.id}')" class="cursor-pointer bg-white rounded-2xl p-2 sm:p-3 border-2 border-amber-200 hover:border-brand-pink shadow-sm hover:shadow-md transition-all active:scale-95 flex flex-col items-center text-center group">
+            <div class="w-12 h-12 sm:w-16 sm:h-16 mb-1 p-1 bg-amber-50 rounded-xl group-hover:scale-105 transition-transform flex items-center justify-center">
+              ${item.svg}
+            </div>
+            <div class="font-bold text-xs sm:text-sm text-gray-800 line-clamp-1">
+              ${this.lang === 'bm' ? item.bm : item.en}
+            </div>
+            <div class="text-[10px] font-semibold text-gray-500">
+              ${this.lang === 'bm' ? CAT_NAMES[item.cat].bm : CAT_NAMES[item.cat].en}
+            </div>
+          </div>
+        `).join('');
+
+        container.innerHTML = `
+          <div class="w-full max-w-3xl bg-white/95 backdrop-blur-md rounded-3xl p-4 sm:p-6 shadow-2xl border-4 border-yellow-300 flex flex-col h-[82vh] max-h-[700px] anim-pop">
+            
+            <div class="flex items-center justify-between gap-2 border-b-2 border-dashed border-amber-200 pb-3 mb-2">
+              <div>
+                <h2 class="heading-font text-2xl text-brand-pink flex items-center gap-2">
+                  ${ICONS.palette} <span>${this.t('collectionTitle')}</span>
+                </h2>
+                <p class="text-xs font-semibold text-gray-600">${this.t('collectionDesc')} (${ARTWORKS.length} ${this.t('totalItems')})</p>
+              </div>
+              <button onclick="game.goToHome()" class="p-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-2xl border border-gray-300 text-xs font-bold">
+                ✕
+              </button>
+            </div>
+
+            <div class="flex items-center gap-1.5 overflow-x-auto py-2 mb-2 no-scrollbar">
+              ${filterPills}
+            </div>
+
+            <div class="flex-1 overflow-y-auto pr-1 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 sm:gap-3">
+              ${cardsHtml}
+            </div>
+
+          </div>
+        `;
+      }
+
+      previewArtwork(artId) {
+        const item = ARTWORKS.find(a => a.id === artId);
+        if (!item) return;
+        sound.playPop();
+
+        const modal = document.createElement('div');
+        modal.id = 'artPreviewModal';
+        modal.className = "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm anim-pop";
+        modal.onclick = (e) => {
+          if (e.target === modal) modal.remove();
+        };
+
+        modal.innerHTML = `
+          <div class="bg-white rounded-3xl p-6 max-w-xs w-full text-center border-4 border-yellow-300 shadow-2xl relative">
+            <button onclick="document.getElementById('artPreviewModal').remove()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold flex items-center justify-center">
+              ✕
+            </button>
+            <div class="w-32 h-32 mx-auto my-2 p-2 bg-amber-50 rounded-2xl border-2 border-amber-200 flex items-center justify-center anim-pulse">
+              ${item.svg}
+            </div>
+            <h3 class="heading-font text-2xl text-brand-orange mt-2">${this.lang === 'bm' ? item.bm : item.en}</h3>
+            <p class="text-sm font-bold text-gray-500">${this.lang === 'bm' ? item.en : item.bm}</p>
+            <div class="mt-3 inline-block bg-purple-100 text-purple-800 text-xs font-extrabold px-3 py-1 rounded-full border border-purple-300 uppercase">
+              ${this.lang === 'bm' ? CAT_NAMES[item.cat].bm : CAT_NAMES[item.cat].en}
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+      }
+
+      // ==================== SKRIN 6: PAPAN SKOR KELUARGA ====================
+      showScoreboardScreen(filterCat = 'all') {
+        sound.playTap();
+        const container = document.getElementById('mainScreenContainer');
+        container.dataset.view = 'scoreboard';
+        document.getElementById('navHomeBtn').classList.remove('hidden');
+
+        const allScores = this.getScores();
+        const filtered = filterCat === 'all'
+          ? allScores
+          : allScores.filter(s => s.category === filterCat);
+
+        const rowsHtml = filtered.length === 0
+          ? `
+            <div class="text-center py-12 text-gray-500 font-bold text-sm">
+              <div class="mb-2">${ICONS.starLarge}</div>
+              ${this.t('noScoresYet')}
+            </div>
+          `
+          : filtered.map((rec, i) => {
+            const famCodeBadge = rec.familyCode 
+              ? `<span class="text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded-full font-bold">${rec.familyCode}</span>` 
+              : '';
+            return `
+              <div class="bg-white p-3 sm:p-4 rounded-2xl border-2 border-amber-200 shadow-sm flex items-center justify-between gap-2">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 border border-amber-300 font-bold text-xs flex items-center justify-center heading-font">
+                    #${i + 1}
+                  </div>
+                  <div>
+                    <div class="font-extrabold text-sm sm:text-base text-gray-800 flex items-center gap-1.5">
+                      ${rec.childName} ${famCodeBadge}
+                    </div>
+                    <div class="text-[11px] font-semibold text-gray-500 flex items-center gap-2 mt-0.5">
+                      <span class="uppercase font-bold ${rec.category === 'mudah' ? 'text-orange-600' : 'text-purple-600'}">${rec.category === 'mudah' ? (this.lang === 'bm' ? 'Mudah' : 'Easy') : 'Pro'}</span>
+                      <span>•</span>
+                      <span>${rec.date}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="text-right">
+                  <div class="heading-font text-base sm:text-lg text-brand-orange flex items-center justify-end gap-1.5">
+                    ${ICONS.star} <span>${rec.score}</span>
+                  </div>
+                  <div class="text-[11px] font-bold text-emerald-700">${rec.correct}/${rec.totalQ} ${this.lang === 'bm' ? 'Betul' : 'Correct'}</div>
+                </div>
+              </div>
+            `;
+          }).join('');
+
+        container.innerHTML = `
+          <div class="w-full max-w-2xl bg-white/95 backdrop-blur-md rounded-3xl p-4 sm:p-6 shadow-2xl border-4 border-yellow-300 flex flex-col h-[82vh] max-h-[700px] anim-pop">
+            
+            <div class="flex items-center justify-between gap-2 border-b-2 border-dashed border-amber-200 pb-3 mb-2">
+              <div>
+                <h2 class="heading-font text-2xl text-brand-orange flex items-center gap-2">
+                  ${ICONS.trophy} <span>${this.t('scoreboardTitle')}</span>
+                </h2>
+                <p class="text-xs font-semibold text-gray-600">${this.t('scoreboardDesc')}</p>
+              </div>
+              <button onclick="game.goToHome()" class="p-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-2xl border border-gray-300 text-xs font-bold">
+                ✕
+              </button>
+            </div>
+
+            <div class="flex gap-2 my-2">
+              <button onclick="game.showScoreboardScreen('all')" class="flex-1 py-1.5 rounded-xl text-xs font-bold transition-all ${filterCat === 'all' ? 'bg-brand-orange text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}">
+                ${this.lang === 'bm' ? 'Semua' : 'All'}
+              </button>
+              <button onclick="game.showScoreboardScreen('mudah')" class="flex-1 py-1.5 rounded-xl text-xs font-bold transition-all ${filterCat === 'mudah' ? 'bg-brand-orange text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}">
+                ${this.lang === 'bm' ? 'Mudah (<10)' : 'Easy (<10)'}
+              </button>
+              <button onclick="game.showScoreboardScreen('pro')" class="flex-1 py-1.5 rounded-xl text-xs font-bold transition-all ${filterCat === 'pro' ? 'bg-brand-orange text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}">
+                ${this.lang === 'bm' ? 'Pro (<20)' : 'Pro (<20)'}
+              </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto space-y-2 pr-1">
+              ${rowsHtml}
+            </div>
+
+          </div>
+        `;
+      }
+    }
+
+    let game;
+    window.addEventListener('DOMContentLoaded', () => {
+      game = new AdditionAdventure();
+      game.updateLangButtons();
+
+      const soundIconEl = document.getElementById('soundIcon');
+      if (soundIconEl) {
+        soundIconEl.innerHTML = sound.muted ? ICONS.soundOff : ICONS.soundOn;
+      }
+
+      if (!game.profile.name) {
+        game.showProfileScreen();
+      } else {
+        game.showHomeScreen();
+      }
+    });
+  </script>
+</body>
+</html>
